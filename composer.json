@@ -1,0 +1,13 @@
+{
+    "name": "iyadk/plivo_project",
+    "authors": [
+        {
+            "name": "iyadk",
+            "email": "iyadk@skitsc.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.3",
+        "twig/twig": "3.0"
+    }
+}
