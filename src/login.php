@@ -36,13 +36,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         if ($stmt = $pdo->prepare($sql)) {
 
             $stmt->bindParam(":username", $param_username, PDO::PARAM_STR);
-
             $param_username = trim($_POST["username"]);
 
             if ($stmt->execute()) {
-
                 if ($stmt->rowCount() == 1) {
-
                     if ($row = $stmt->fetch()) {
                         
                         $id = $row["id"];

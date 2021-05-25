@@ -16,6 +16,7 @@ use Twig\Loader\FilesystemLoader;
 $loader = new FilesystemLoader(__DIR__ . '/../templates');
 $twig = new Environment($loader);
 
+// globals
 $twig->addGlobal("username", $_SESSION['username']);
 
 echo $twig->render('dashboard.twig');

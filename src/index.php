@@ -7,4 +7,7 @@
 */
 
 require_once("./middlewares/auth.php");
+
+header("location: dashboard.php");
+exit;
 ?>
