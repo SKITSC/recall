@@ -1,0 +1,27 @@
+{# comment test #}
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+
+<!-- head -->
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+    <!-- responsiveness -->
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+
+    <title>Plivo Backer</title>
+</head>
+
+<!-- body -->
+<body>
+    {% include 'menu.twig' %}
+
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <script type="text/javascript" src="main.js"></script>
+</body>
+
+</html>
