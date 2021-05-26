@@ -5,11 +5,19 @@
     <ul>
     {% for user in users %}
         <li>{{ user.username|e }}
+        {% if id != user.id %}
+            <form method="POST">
+                <input type="hidden" value="{{user.id}}" name="user_id">
+                <input type="hidden" value="true" name="remove">
+                <input type="submit" value="Remove">
+            </form>
+        {% endif %}
         </li>
     {% endfor %}
     </ul>
 
     <h1>New User</h1>
+    <span class="invalid-feedback">{{process_error}}</span>
     <form method="POST">
         <label>Username</label>
         <input type="text" name="username">
@@ -17,6 +25,10 @@
         <label>Password</label>
         <input type="password" name="password">
         <span class="invalid-feedback">{{password_error}}</span>
+        <label>Repeat Password</label>
+        <input type="password" name="password_repeat">
+        <span class="invalid-feedback">{{password_repeat_error}}</span>
+        <input type="hidden" value="true" name="add">
         <input type="submit" value="Add">
     </form>
 {% endblock %}

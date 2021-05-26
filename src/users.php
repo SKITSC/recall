@@ -6,6 +6,8 @@
 * Description: users page
 */
 
+date_default_timezone_set('America/Toronto');
+
 require_once("./middlewares/auth.php");
 
 require '../vendor/autoload.php';
@@ -19,25 +21,12 @@ $loader = new FilesystemLoader(__DIR__ . '/../templates');
 $twig = new Environment($loader);
 
 // globals
+$twig->addGlobal("id", $_SESSION['id']);
 $twig->addGlobal("username", $_SESSION['username']);
-
-$users_array = array();
-
-$sql = "SELECT * FROM backer_users";
-
-if ($stmt = $pdo->prepare($sql)) {
-    if ($stmt->execute()) {
-        while ($row = $stmt->fetch()) {
-            array_push($users_array, $row);
-        }
-    } else {
-        echo "error with stmt!";
-    }
-}
 
 // add - remove a user
 $username = $password = $password_repeat = "";
-$username_err = $password_err = $process_err = "";
+$username_err = $password_err = $password_repeat_err = $process_err = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -57,6 +46,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 $username_err = "Please fill the username...";
             }
+
+            //verify if unique
+
+            if (empty($username_err)) {
+
+                $sql = "SELECT * FROM backer_users WHERE username = :username";
+
+                if ($stmt = $pdo->prepare($sql)) {
+
+                    $stmt->bindParam(":username", $username, PDO::PARAM_STR);
+
+                    if ($stmt->execute()) {
+                        if ($stmt->rowCount() >= 1) {
+                            $username_err = "Username already exists...";
+                        }
+                    } else {
+                        echo "error with stmt!";
+                    }
+                }
+            }
         
             // verify password
             if (isset($_POST['password']) && !empty($_POST['password'])) {
@@ -65,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if (isset($_POST['password_repeat']) && !empty($_POST['password_repeat'])) {
                     $password_repeat = $_POST['password_repeat'];
                     if (strcmp($password, $password_repeat) != 0) {
-                        $password_err = "Incorrect password confirmation";
+                        $password_repeat_err = "Incorrect password confirmation";
                     }
                 } else {
                     $password_err = "Incorrect password confirmation";
@@ -84,12 +93,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // insert
             if (empty($username_err) && empty($password_err)) {
-                $sql = "INSERT INTO backer_users (username, password) VALUES (?, ?)";
+                $sql = "INSERT INTO backer_users (username, password, created_at) VALUES (:username, :password, :created_at)";
 
                 if ($stmt = $pdo->prepare($sql)) {
+
+                    $created_at = date("Y/m/d h:i:sa");
+
+                    $password_hash = password_hash($password, PASSWORD_BCRYPT);
             
                     $stmt->bindParam(":username", $username, PDO::PARAM_STR);
-                    $stmt->bindParam(":password", $password, PDO::PARAM_STR);
+                    $stmt->bindParam(":password", $password_hash, PDO::PARAM_STR);
+                    $stmt->bindParam(":created_at", $created_at, PDO::PARAM_STR);
             
                     if ($stmt->execute()) {
                         echo "New user added successfully!";
@@ -118,9 +132,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $user_id_err = "invalid user id";
             }
 
+            // verify if not our own user
+            if (empty($user_id_err)) {
+                if ($user_id == $_SESSION['id']) {
+                    $user_id_err = "You cannot delete your own user...";
+                }
+            }
+
             // delete
             if (empty($user_id_err)) {
-                $sql = "DELETE FROM backer_users WHERE id=?";
+                $sql = "DELETE FROM backer_users WHERE id = :id";
 
                 if ($stmt = $pdo->prepare($sql)) {
             
@@ -140,11 +161,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 }
 
+// show users
+
+$users_array = array();
+
+$sql = "SELECT * FROM backer_users";
+
+if ($stmt = $pdo->prepare($sql)) {
+    if ($stmt->execute()) {
+        while ($row = $stmt->fetch()) {
+            array_push($users_array, $row);
+        }
+    } else {
+        echo "error with stmt!";
+    }
+}
+
 // unset db
 unset($stmt);
 unset($pdo);
 
-echo $twig->render('users.twig', ['users' => $users_array]);
+echo $twig->render('users.twig', ['users' => $users_array, 
+                                'username_error' => $username_err,
+                                'password_error' => $password_err,
+                                'password_repeat_error' => $password_repeat_err,
+                                'process_error' => $process_err]);
 ?>
 
 
