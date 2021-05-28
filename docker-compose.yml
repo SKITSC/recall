@@ -1,0 +1,9 @@
+version: '3'
+services:
+  plivo_backer:
+    build:
+      context: ./
+      dockerfile: DockerFile
+    ports:
+      - "80:80"
+      - "443:443"
