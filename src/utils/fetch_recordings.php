@@ -33,11 +33,16 @@ $client = new RestClient($AuthID, $AuthToken);
 
 $process_err = "";
 
-//number of fetches per update $_GET
-
 // the limit imposed by Plivo API
 $limit_fetch = 20;
-$recordings_to_fetch_per_update = 5;
+$recordings_to_fetch_per_update = 20;
+
+//number of fetches per update
+if (isset($_GET['fetch']) && !empty($_GET['fetch'])) {
+    if (filter_var($_GET['fetch'], FILTER_VALIDATE_INT)) {
+        $recordings_to_fetch_per_update = $_GET['fetch'];
+    }
+}
 
 $recordings_retrieved = array();
 
