@@ -6,7 +6,7 @@
 * Description: basic link to MySQL server
 */
 
-require '../vendor/autoload.php';
+require_once(dirname(__FILE__) . '/../vendor/autoload.php'); 
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/..");
 $dotenv->load();
