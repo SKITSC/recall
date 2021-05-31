@@ -1,48 +1,39 @@
-FROM httpd:alpine
+FROM ubuntu:21.04
 
 LABEL iyadk <iyadk@skitsc.com>
 
 ENV TIMEZONE America/Toronto
+RUN DEBIAN_FRONTEND=noninteractive
 
-#httpd conf
-RUN rm /usr/local/apache2/conf/httpd.conf
-COPY ./config/httpd.conf /usr/local/apache2/conf/
-
-COPY ./src /usr/local/apache2/htdocs
-RUN chmod -R 755 /usr/local/apache2/htdocs
-RUN chown -R www-data:www-data /usr/local/apache2/htdocs
-RUN ls -la /usr/local/apache2/htdocs
-
-RUN apk update && apk upgrade
-RUN apk add mariadb mariadb-client \
+RUN apt-get update && apt-get -y upgrade
+RUN apt-get -y install \
     curl \
-    php7-cli \
-    php7-phar \
-    php7-zlib \
-    php7-zip \
-    php7-bz2 \
-    php7-ctype \
-    php7-curl \
-    php7-pdo_mysql \
-    php7-mysqli \
-    php7-json \
-    php7-mcrypt \
-    php7-xml \
-    php7-dom \
-    php7-iconv \
-    php7-xdebug \
-    php7-session \
-    php7-intl \
-    php7-gd \
-    php7-mbstring \
-    php7-apcu \
-    php7-opcache \
-    php7-tokenizer
+    apache2 \
+    php7.0 \
+    php7.0-mysql \
+    libapache2-mod-php7.0
+
+RUN a2enmod php7.0
+RUN a2enmod rewrite
+RUN a2enmod ssl
+
+ENV APACHE_RUN_USER www-data
+ENV APACHE_RUN_GROUP www-data
+ENV APACHE_LOG_DIR /var/log/apache2
+ENV APACHE_LOCK_DIR /var/lock/apache2
+ENV APACHE_PID_FILE /var/run/apache2.pid
+
+ADD src /var/www/html
+ADD config/apache-config.conf /etc/apache2/sites-enabled/000-default.conf
+
+RUN chmod -R 755 /var/www/html
+RUN chown -R www-data:www-data /var/www/html
+RUN ls -la /var/www/html
 
 RUN curl -sS https://getcomposer.org/installer | \
     php -- --install-dir=/usr/bin --filename=composer
 
-WORKDIR /usr/local/apache2/htdocs
-RUN composer require
+WORKDIR /var/www/html
+RUN composer install
 
-CMD ["httpd-foreground"]
+CMD /usr/sbin/apache2ctl -D FOREGROUND
