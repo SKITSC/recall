@@ -1,19 +1,12 @@
-FROM ubuntu:21.04
+FROM php:7.3-apache
 
 LABEL iyadk <iyadk@skitsc.com>
 
 ENV TIMEZONE America/Toronto
-RUN DEBIAN_FRONTEND=noninteractive
+RUN  DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get -y upgrade
-RUN apt-get -y install \
-    curl \
-    apache2 \
-    php7.0 \
-    php7.0-mysql \
-    libapache2-mod-php7.0
+RUN apt-get update && apt-get upgrade -y
 
-RUN a2enmod php7.0
 RUN a2enmod rewrite
 RUN a2enmod ssl
 
@@ -33,7 +26,8 @@ RUN ls -la /var/www/html
 RUN curl -sS https://getcomposer.org/installer | \
     php -- --install-dir=/usr/bin --filename=composer
 
-WORKDIR /var/www/html
+ADD composer.json /var/www
+WORKDIR /var/www
 RUN composer install
 
 CMD /usr/sbin/apache2ctl -D FOREGROUND
