@@ -5,11 +5,14 @@ services:
         build:
             context: ./
             dockerfile: web.Dockerfile
+        expose:
+        - 80
+        - 443
         ports:
             - "80:80"
             - "443:443"
         volumes:
-            - ./src:/var/www/html
+            - ./src:/usr/local/apache2/htdocs
         depends_on: 
             - db
         links:
@@ -19,6 +22,8 @@ services:
         build:
             context: ./
             dockerfile: db.Dockerfile
+        environment: 
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
         expose:
         - 3306
         ports:
