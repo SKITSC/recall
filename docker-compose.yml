@@ -1,9 +1,31 @@
-version: '3'
+version: "3"
+
 services:
-  plivo_backer:
-    build:
-      context: ./
-      dockerfile: DockerFile
-    ports:
-      - "80:80"
-      - "443:443"
+    web:
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./src:/var/www/html
+        depends_on: 
+            - db
+        links:
+            - db
+        restart: always
+    db:
+        image: mysql:latest
+        environment: 
+            - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+        expose:
+        - 3306
+        ports:
+        - "3306:3306"
+        volumes:
+        - db_vol:/var/lib/mysql
+        restart: always
+
+volumes:
+    db_vol:
