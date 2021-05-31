@@ -1,5 +1,5 @@
-FROM ubuntu:latest
-ENV DEBIAN_FRONTEND=noninteractive
+FROM alpine:latest
+
 RUN apt-get update -y
 RUN apt-get upgrade -y
 RUN apt-get install -y apache2 
@@ -13,8 +13,3 @@ RUN apt-get install -y php-common
 RUN apt-get install -y php-mbstring 
 RUN apt-get install -y composer
 RUN apt-get install -y software-properties-common
-
-CMD ["apachectl","-D","FOREGROUND"]
-RUN a2enmod rewrite
-EXPOSE 80
-EXPOSE 443

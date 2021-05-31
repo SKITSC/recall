@@ -4,7 +4,7 @@ services:
     web:
         build:
             context: ./
-            dockerfile: Dockerfile
+            dockerfile: web.Dockerfile
         ports:
             - "80:80"
             - "443:443"
@@ -16,16 +16,11 @@ services:
             - db
         restart: always
     db:
-        image: mysql:latest
-        environment: 
-            - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+        build:
+            context: ./
+            dockerfile: db.Dockerfile
         expose:
         - 3306
         ports:
         - "3306:3306"
-        volumes:
-        - db_vol:/var/lib/mysql
         restart: always
-
-volumes:
-    db_vol:
