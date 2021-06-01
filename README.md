@@ -23,10 +23,11 @@ sed -i -e 's/DEV/PRODUCTION/g' .env
 
 docker-compose up --build
 ```
+Find the app running at http://localhost:80/
 
-Deploy credentials for the app is `skitsc:skitsc`
+Default credentials are `skitsc:skitsc`
 
-Login and synchronize start by synchronizing the database, then a cron job will run and keep you updated every REFRESH_TIME defined in the .env file.
+Login and start by synchronizing the database, then a cron job will run and keep you updated every REFRESH_TIME defined in the .env file.
 
 Find your recordings in the /recordings folder, in the format:
 

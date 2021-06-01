@@ -35,7 +35,7 @@ $AuthToken = $_ENV['PLIVO_AUTH_TOKEN'];
 $client = new RestClient($AuthID, $AuthToken);
 
 $total_recordings = 0;
-$plivo_err = "";
+$plivo_err = $fatal_keys_err = "";
 
 try {
 

@@ -6,3 +6,7 @@ vendor
 
 #recordings
 recordings/
+
+#js
+node_modules
+dist
