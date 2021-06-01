@@ -66,8 +66,12 @@ try {
 
 } catch (PlivoRestException $ex) {
 
-    print_r(ex);
+    print_r($ex);
     $plivo_err = "Call to Plivo API failed! - Check connection!";
+
+} catch (Throwable $th) {
+    $plivo_err = $th;
+    $fatal_keys_err = "Error with your Plivo API keys! Please verify that you have correctly imported the environment files!";
 }
 
 // unset db
@@ -77,6 +81,6 @@ unset($pdo);
 // globals
 $twig->addGlobal("username", $_SESSION['username']);
 
-echo $twig->render('recordings.twig');
+echo $twig->render('recordings.twig', ['fatal_err' => $fatal_keys_err]);
 
 ?>

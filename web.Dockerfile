@@ -25,6 +25,7 @@ ADD config.php /var/www
 
 #source
 ADD src /var/www/html
+ADD templates /var/www/templates
 ADD config/apache-config.conf /etc/apache2/sites-enabled/000-default.conf
 
 RUN chmod -R 755 /var/www/html
@@ -40,7 +41,7 @@ ADD composer.json /var/www
 WORKDIR /var/www
 RUN composer install
 
-RUN /etc/init.d/apache2 reload
+RUN service apache2 restart
 
 EXPOSE 80
 

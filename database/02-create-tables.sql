@@ -17,7 +17,7 @@ CREATE TABLE backer_users (
 );
 
 INSERT INTO backer_users (username, password) VALUES
-    ('skitsc', '$2y$10$ZZvdSoF4hk92M9iGqxpMCOIYVk2wioQhB3/mecVebbl0fx7HEbWS6'); -- password: skitsc
+    ('skitsc', '$2y$10$410ac2lEqBZuEnTbo7yfGOYKRqHMhHXpQ7UE8Ftf8Bzvpl2wz/LbC'); -- password: skitsc
 
 CREATE TABLE backer_recordings (
   id INT NOT NULL AUTO_INCREMENT,

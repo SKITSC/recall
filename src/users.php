@@ -97,7 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 if ($stmt = $pdo->prepare($sql)) {
 
-                    $created_at = date("Y/m/d h:i:sa");
+                    $created_at = date("Y/m/d h:i:s");
 
                     $password_hash = password_hash($password, PASSWORD_BCRYPT);
             

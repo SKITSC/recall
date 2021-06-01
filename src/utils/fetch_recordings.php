@@ -90,7 +90,7 @@ try {
             // it returns sometime an empty array... so check if not null...
 			try {
     			$call_details = $client->calls->get($call_uuid);
-				$call_details_object = get_object_vars($call_details);
+				$call_details_object = get_object_vars($call_details); 
 
 				if (isset($call_details_object['properties']['from'])) {
 					$from_number = $call_details_object['properties']['from'];
@@ -174,15 +174,23 @@ try {
 } catch (PlivoRestException $ex) {
     $process_err = $ex;
     $process_err .= "Call to Plivo API failed! - Check connection!";
+} catch (Throwable $th) {
+    $process_err = $th;
+    $fatal_keys_err = "Error with your Plivo API keys! Please verify that you have correctly imported the environment files!";
 }
 
 // unset db
 unset($stmt);
 unset($pdo);
 
-// send data
-$recordings_json = json_encode($recordings_retrieved, JSON_FORCE_OBJECT);
-
 header('Content-type: application/json');
-echo $recordings_json;
+
+if (!empty($fatal_keys_err)) {
+    echo $fatal_keys_err;
+} else {
+    // send data
+    $recordings_json = json_encode($recordings_retrieved, JSON_FORCE_OBJECT);
+
+    echo $recordings_json;
+}
 ?>
