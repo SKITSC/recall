@@ -25,8 +25,11 @@ docker-compose up --build
 ```
 
 Deploy credentials for the app is `skitsc:skitsc`
+
 Login and synchronize start by synchronizing the database, then a cron job will run and keep you updated every REFRESH_TIME defined in the .env file.
+
 Find your recordings in the /recordings folder, in the format:
+
 /recording
 |
 |___________year
