@@ -6,6 +6,7 @@ ENV TIMEZONE America/Toronto
 RUN  DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get upgrade -y
+RUN apt-get install git -y
 
 RUN a2enmod rewrite
 RUN a2enmod ssl
@@ -16,6 +17,11 @@ ENV APACHE_LOG_DIR /var/log/apache2
 ENV APACHE_LOCK_DIR /var/lock/apache2
 ENV APACHE_PID_FILE /var/run/apache2.pid
 
+#config
+ADD .env /var/www
+ADD config.php /var/www
+
+#source
 ADD src /var/www/html
 ADD config/apache-config.conf /etc/apache2/sites-enabled/000-default.conf
 
@@ -29,5 +35,7 @@ RUN curl -sS https://getcomposer.org/installer | \
 ADD composer.json /var/www
 WORKDIR /var/www
 RUN composer install
+
+EXPOSE 80
 
 CMD /usr/sbin/apache2ctl -D FOREGROUND
