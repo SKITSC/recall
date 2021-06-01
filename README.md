@@ -39,7 +39,6 @@ Find your recordings in the /recordings folder, in the format:
                                     |___________hour-minute-second.mp3
 ```
 
-
 ## Features
 
 * Feature 1
