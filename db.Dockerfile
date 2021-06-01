@@ -1,4 +1,6 @@
-FROM mysql:8.0.25
+FROM mysql:5.7.34
+
+LABEL iyadk <iyadk@skitsc.com>
 
 ENV MYSQL_ROOT_PASSWORD $DB_PASSWORD
 

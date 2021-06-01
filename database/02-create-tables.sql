@@ -3,6 +3,8 @@
 -- author: Iyad Al-Kassab @ SKITSC
 -- description: create's tables on deployement
 
+use plivo_backer;
+
 DROP TABLE IF EXISTS `backer_users`;
 DROP TABLE IF EXISTS `backer_recordings`;
 

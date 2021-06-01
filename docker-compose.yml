@@ -1,19 +1,36 @@
-version: "3"
+version: "3.2"
 
 services:
     web:
+        container_name: plivo_web
         build:
             context: ./
             dockerfile: web.Dockerfile
+        networks:
+            - plivo_network
         ports:
             - "80:80"
         depends_on: 
             - db
         restart: always
     db:
+        container_name: ${DB_HOST}
         build:
             context: ./
             dockerfile: db.Dockerfile
+        environment:
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+        networks:
+            - plivo_network
         ports:
         - "3306:3306"
+        volumes:
+            - plivo_volume:/var/lib/mysql
         restart: always
+    
+volumes:
+    plivo_volume:
+
+networks:
+    plivo_network:
+        driver: bridge

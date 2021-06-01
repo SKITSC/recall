@@ -5,7 +5,6 @@
 
 -- added order for script execution
 
-CREATE DATABASE IF NOT EXISTS `plivo_backer`;
+CREATE DATABASE IF NOT EXISTS `plivo_backer` CHARACTER SET 'utf8';
 
-GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost'
-    IDENTIFIED BY 'sa' WITH GRANT OPTION;
+ -- GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'sa' WITH GRANT OPTION;

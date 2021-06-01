@@ -8,6 +8,8 @@ RUN  DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install git -y
 
+RUN docker-php-ext-install pdo pdo_mysql
+
 RUN a2enmod rewrite
 RUN a2enmod ssl
 
@@ -27,6 +29,8 @@ ADD config/apache-config.conf /etc/apache2/sites-enabled/000-default.conf
 
 RUN chmod -R 755 /var/www/html
 RUN chown -R www-data:www-data /var/www/html
+RUN chmod -R 755 /var/www
+RUN chown -R www-data:www-data /var/www
 RUN ls -la /var/www/html
 
 RUN curl -sS https://getcomposer.org/installer | \
@@ -35,6 +39,8 @@ RUN curl -sS https://getcomposer.org/installer | \
 ADD composer.json /var/www
 WORKDIR /var/www
 RUN composer install
+
+RUN /etc/init.d/apache2 reload
 
 EXPOSE 80
 
