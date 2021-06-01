@@ -30,12 +30,14 @@ Login and synchronize start by synchronizing the database, then a cron job will 
 
 Find your recordings in the /recordings folder, in the format:
 
-/recording
+```
+/recordings
 |
 |___________year
             |___________month
                         |___________day
                                     |___________hour-minute-second.mp3
+```
 
 
 ## Features
