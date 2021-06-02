@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+
+{% include 'head.twig' %}
+
+<body class="skitsc-theme">
+
+    {{ login_err }}
+
+    <form action="login.php" method="post">
+        <label>Username</label>
+        <input type="text" name="username" value="{{ username }}">
+        <span class="invalid-feedback">{{ username_err }}</span>   
+        <label>Password</label>
+        <input type="password" name="password">
+        <span class="invalid-feedback">{{ password_err }}</span>
+        <input type="submit" value="Login">
+    </form>
+
+</body>
+
+</html>

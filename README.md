@@ -4,6 +4,9 @@ Create backup for all your recorded calls, locally on your server.
 ## Install
 
 Without Docker:
+
+Start by importing the database, scripts are already in /database.
+
 ```bash
 git clone https://github.com/SKITSC/plivo_backup.git
 cd ./plivo_backup

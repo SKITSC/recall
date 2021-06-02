@@ -1,42 +1,76 @@
-//test scss
+@import 'skitsc-theme';
 
-$font-stack: Helvetica, sans-serif;
-$primary-color: #333;
+html {
+  height: 100%;
+}
 
 body {
-  font: 100% $font-stack;
-  color: $primary-color;
+  background: url("../img/bg.jpg");
+  min-height: 100%;
 }
 
-@mixin border-radius($radius) {
-  -webkit-border-radius: $radius;
-     -moz-border-radius: $radius;
-      -ms-border-radius: $radius;
-          border-radius: $radius;
-}
+@mixin themable($theme-name, $theme-map) {
+  .#{$theme-name} {
 
-nav {
-  ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
+      .container {
+          .left, .right {
+              font-size: 2rem;
+          }
+      }
+
+      .container .right {
+          position: relative
+      }
+
+      .login_container {
+
+      }
+
+      .button {
+          border: 0;
+          border-radius: 10px;
+          bottom: 10px;
+          cursor: pointer;
+          font-size: 1rem;
+          font-weight: bold;
+          padding: 1em 2em;
+          position: absolute;
+          right: 10px;
+      }
+
+      @each $section, $map in $theme-map {
+          @if ($section == body) {
+            body {
+              background: map-get($map, bg);
+            }
+          } @else if ($section == container) {
+              .container {
+                  background-color: map-get($map, bg);
+                  border: 1px solid map-get($map, border-color);
+                  display: flex;
+                  height: 500px;
+                  justify-content: space-between;
+                  margin: 0 auto;
+                  padding: 1em;
+                  width: 50%;
+              }
+          } @else {
+              .#{$section} {
+                  background-color: map-get($map, bg);
+                  color: map-get($map, color);
+
+                  @if ($section != button) {
+                      height: map-get($map, height);
+                      width: map-get($map, width);
+                  } @else {
+                    &:hover {
+                        background-color: lighten(map-get($map, bg), 20%);
+                  }
+                }
+              }
+          }
+      }
   }
-
-  li { @include border-radius(10px); }
-
-  a {
-    display: block;
-    padding: 6px 12px;
-    text-decoration: none;
-  }
 }
 
-.class_name_test {
-  display: block;
-  color:blue;
-}
-
-#id_name_test {
-  display:block;
-  color:red;
-}
+@include themable(skitsc-theme, $skitsc-theme);

@@ -7,6 +7,14 @@
 */
 
 require_once("./middlewares/auth.php");
+
+require '../vendor/autoload.php';
+
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
+
+$loader = new FilesystemLoader(__DIR__ . '/../templates');
+$twig = new Environment($loader);
  
 require_once "../config.php";
 require "db.php";
@@ -72,30 +80,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     unset($pdo);
 }
 
+echo $twig->render('login.twig', ['username' => $username,
+                                'username_err' => $username_err,
+                                'password_err' => $password_err,
+                                'login_err' => $login_err]);
+
 ?>
- 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Login - Plivo Call Backer</title>
-
-</head>
-<body>
-    <?php 
-        if(!empty($login_err)){
-            echo '<div>' . $login_err . '</div>';
-        }        
-    ?>
-
-    <form action="login.php" method="post">
-        <label>Username</label>
-        <input type="text" name="username" value="<?php echo $username; ?>">
-        <span class="invalid-feedback"><?php echo $username_err; ?></span>   
-        <label>Password</label>
-        <input type="password" name="password">
-        <span class="invalid-feedback"><?php echo $password_err; ?></span>
-        <input type="submit" value="Login">
-    </form>
-</body>
-</html>
