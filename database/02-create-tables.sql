@@ -5,10 +5,10 @@
 
 use plivo_backer;
 
-DROP TABLE IF EXISTS `backer_users`;
-DROP TABLE IF EXISTS `backer_recordings`;
+-- DROP TABLE IF EXISTS `backer_users`;
+-- DROP TABLE IF EXISTS `backer_recordings`;
 
-CREATE TABLE backer_users (
+CREATE TABLE IF NOT EXISTS backer_users (
   id INT NOT NULL AUTO_INCREMENT,
   username VARCHAR(64) DEFAULT '' NOT NULL,
   password VARCHAR(255) DEFAULT '' NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE backer_users (
 INSERT INTO backer_users (username, password) VALUES
     ('skitsc', '$2y$10$410ac2lEqBZuEnTbo7yfGOYKRqHMhHXpQ7UE8Ftf8Bzvpl2wz/LbC'); -- password: skitsc
 
-CREATE TABLE backer_recordings (
+CREATE TABLE IF NOT EXISTS backer_recordings (
   id INT NOT NULL AUTO_INCREMENT,
   call_uuid VARCHAR(36),
   add_time DATETIME,
