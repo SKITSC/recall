@@ -1,74 +1,171 @@
-@import 'skitsc-theme';
+@import 'themes';
 
-html {
-  height: 100%;
+/* move animation */
+
+@keyframes move {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-40px);
+  }
+
+  100% {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
 }
+
+@keyframes left {
+  0% {
+    opacity: 0;
+    width: 0;
+  }
+
+  100% {
+    opacity: 1;
+    padding: 20px 40px;
+    width: 440px;
+  }
+}
+
+/* body */
 
 body {
-  background: url("../img/bg.jpg");
-  min-height: 100%;
+  margin: 0px;
+
+  font-family: Arial, Helvetica, sans-serif;
+  letter-spacing: 2px;
 }
 
-@mixin themable($theme-name, $theme-map) {
-  .#{$theme-name} {
+/* Login */
 
-      .container {
+.login-container {
 
+  display: flex;
+  height: 100vh;
+
+  .a1 {
+    animation-delay: 2s;
+  }
+
+  .a2 {
+    animation-delay: 2.1s;
+  }
+
+  .a3 {
+    animation-delay: 2.2s;
+  }
+
+  .a4 {
+    animation-delay: 2.3s;
+  }
+
+  .a5 {
+    animation-delay: 2.4s;
+  }
+
+  .a6 {
+    animation-delay: 2.5s;
+  }
+
+  .invalid-feedback {
+    color: red;
+  }
+
+  @include themify($themes) {
+      background-color: themed('secondary');
+      color: themed('primary');
+
+      .left {
+        overflow: hidden;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        justify-content: center;
+        animation-name: left;
+        animation-duration: 1s;
+        animation-fill-mode: both;
+        animation-delay: 1s;
+        border-right: 1px solid themed('primary');
+      }
+      
+      .right {
+        flex: 1;
+        background-color: themed('primary');;
+        transition: 1s;
+        background-image: url(../img/bg.jpg);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-attachment: fixed;
+      }
+    
+      .header > h2 {
+        margin: 0;
+        color: themed('primary');
+      }
+    
+      .header > h4 {
+        font-weight: normal;
+        font-size: 18px;
+        color: themed('primary');
+        margin-bottom: 0px;
+      }
+    
+      .form {
+        max-width: 80%;
+        display: flex;
+        flex-direction: column;
+      }
+    
+      .form > p {
+        text-align: right;
+      }
+    
+      .form > p > a {
+        color: #000;
+        font-size: 18px;
+      }
+    
+      .form-field {
+        height: 40px;
+        padding: 0 18px;
+        outline: 0;
+        transition: .2s;
+        margin-top: 30px;
+        margin-bottom:5px;
+        border-radius: 8px;
+        font-size: 18px;
+      }
+    
+      .form-field:focus {
+        border-color: themed('primary');
+      }
+    
+      .form > .login-button {
+        padding: 12px 10px;
+        border: none;
+        background: linear-gradient(to right, themed('primary') 0%, darken(themed('primary'), 30%) 100%); 
+        margin-top: 30px;
+        color: white;
+        font-size:18px;
+        letter-spacing: 2px;
+        transition: 0.2s;
+        border-radius: 8px;;
       }
 
-      .login_container {
-        margin: 0 auto;
-        width:50%;
-        border:1px solid rgb(0, 0, 0);
-        padding:10px;
-        text-align: center;
+      .login-button:hover {
+
+        box-shadow: 0px 0px 20px 0px themed('primary');
       }
-
-      .button {
-          border: 0;
-          border-radius: 10px;
-          bottom: 10px;
-          cursor: pointer;
-          font-size: 1rem;
-          font-weight: bold;
-          padding: 1em 2em;
-          position: absolute;
-          right: 10px;
-      }
-
-      @each $section, $map in $theme-map {
-          @if ($section == body) {
-            body {
-              background: map-get($map, bg);
-            }
-          } @else if ($section == container) {
-              .container {
-                  background-color: map-get($map, bg);
-                  border: 1px solid map-get($map, border-color);
-                  display: flex;
-                  height: 500px;
-                  justify-content: space-between;
-                  margin: 0 auto;
-                  padding: 1em;
-                  width: 50%;
-              }
-          } @else {
-              .#{$section} {
-                  background-color: map-get($map, bg);
-                  color: map-get($map, color);
-
-                  @if ($section != button) {
-                      height: map-get($map, height);
-                      width: map-get($map, width);
-                  } @else {
-                    &:hover {
-                        background-color: lighten(map-get($map, bg), 20%);
-                  }
-                }
-              }
-          }
+    
+      .animation {
+        animation-name: move;
+        animation-duration: .4s;
+        animation-fill-mode: both;
+        animation-delay: 2s;
       }
   }
 }
 
-@include themable(skitsc-theme, $skitsc-theme);

@@ -2,22 +2,32 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 
 {% include 'head.twig' %}
+{% set theme = 'theme-skitsc-theme' %}
 
-<body class="skitsc-theme">
+<body class="{{ theme }}">
 
     {{ login_err }}
 
-    <div class="login_container">
-        <form action="login.php" method="post">
-            <label>Username</label>
-            <input type="text" name="username" value="{{ username }}">
-            <span class="invalid-feedback">{{ username_err }}</span>   
-            <label>Password</label>
-            <input type="password" name="password">
-            <span class="invalid-feedback">{{ password_err }}</span>
-            <input type="submit" value="Login">
+    <div class="login-container">
+
+        <div class="logo">
+            <img width="50" src="static/img/logo.png"/>
+        </div>
+        <div class="left">
+            <div class="header">
+            <h2 class="animation a1">Welcome Back</h2>
+            <h4 class="animation a2">Don't ever lose a recorded call !</h4>
+        </div>
+        <form class="form" action="login.php" method="post">
+            <input type="text" name="username" class="form-field animation a3" value="{{ username }}" placeholder="username">
+            <span class="invalid-feedback animation a4">{{ username_err }}</span>  
+            <input type="password" class="form-field animation a4" name="password" placeholder="password">
+            <span class="invalid-feedback animation a4">{{ password_err }}</span>
+            <input class="login-button animation a4" type="submit" value="Login">
         </form>
-    </div>
+  </div>
+  
+  <div class="right"></div>
 
 </body>
 

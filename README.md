@@ -25,6 +25,7 @@ cp .env.example .env
 sed -i -e 's/DEV/PRODUCTION/g' .env
 
 docker-compose up --build
+
 docker exec -it plivo_web bash #attach to web container
 docker exec -it plivo_db bash #attach to db container
 ```
@@ -47,7 +48,7 @@ Find your recordings in the /recordings folder, in the format:
 
 ## Local development
 
-Take a look at the gulp file! However you set up your environment, simply change the proxy option in gulp.js, then you can run:
+However you set up your environment, simply change the proxy option in gulp.js, then you can run:
 ```
 npm run watch
 ```
