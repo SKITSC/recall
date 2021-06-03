@@ -13,17 +13,15 @@ body {
   .#{$theme-name} {
 
       .container {
-          .left, .right {
-              font-size: 2rem;
-          }
-      }
 
-      .container .right {
-          position: relative
       }
 
       .login_container {
-
+        margin: 0 auto;
+        width:50%;
+        border:1px solid rgb(0, 0, 0);
+        padding:10px;
+        text-align: center;
       }
 
       .button {

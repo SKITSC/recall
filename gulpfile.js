@@ -33,9 +33,8 @@ gulp.task('clean', done => {
 gulp.task('watch', () => {
 
     browserSync.init({
-        server: {
-            baseDir: "./src/static"
-        }
+        proxy: "localhost/plivo_backup/src/",
+        online: true
     });
 
     gulp.watch('./public/scss/*.scss').on('change', gulp.series('sass')); //compile sass and minify css
@@ -52,29 +51,35 @@ gulp.task('sass', () => {
         .pipe(sourcemaps.write())
         .pipe(cleancss())
         .pipe(rename({suffix:'.min'}))
-        .pipe(gulp.dest('./src/static/css/'));
+        .pipe(gulp.dest('./src/static/css/'))
+        .pipe(browserSync.stream());
 });
 
 gulp.task('scripts', () => {
 
     return gulp.src('./public/js/*.js')
+        .pipe(sourcemaps.init({ loadMaps: true }))
         .pipe(gulpif('*.js', uglify()))
         .pipe(obfuscator({compact:true}))
+        .pipe(sourcemaps.write())
         .pipe(rename({suffix:'.min'}))
-        .pipe(gulp.dest('./src/static/js/'));
+        .pipe(gulp.dest('./src/static/js/'))
+        .pipe(browserSync.stream());
 });
 
 gulp.task('fonts', () => {
   
     return gulp.src('./public/fonts/*.{eot, svg, ttf, woff, woff2}')
-        .pipe(gulp.dest('./src/static/fonts/'));
+        .pipe(gulp.dest('./src/static/fonts/'))
+        .pipe(browserSync.stream());
 });
 
 gulp.task('images', () => {
 
     return gulp.src('./public/img/*')
         .pipe(imagemin())
-        .pipe(gulp.dest('./src/static/img/'));
+        .pipe(gulp.dest('./src/static/img/'))
+        .pipe(browserSync.stream());
 });
 
 gulp.task('build', gulp.series('clean', 'sass', 'scripts', 'fonts', 'images'), () => {

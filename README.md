@@ -25,6 +25,8 @@ cp .env.example .env
 sed -i -e 's/DEV/PRODUCTION/g' .env
 
 docker-compose up --build
+docker exec -it plivo_web bash #attach to web container
+docker exec -it plivo_db bash #attach to db container
 ```
 Find the app running at http://localhost:80/
 
@@ -36,11 +38,18 @@ Find your recordings in the /recordings folder, in the format:
 
 ```
 /recordings
-|
-|___________year
-            |___________month
-                        |___________day
-                                    |___________hour-minute-second.mp3
+|       
+|_______year
+        |_______month
+                |_______day
+                        |_______hour-minute-second.mp3
+```
+
+## Local development
+
+Take a look at the gulp file! However you set up your environment, simply change the proxy option in gulp.js, then you can run:
+```
+npm run watch
 ```
 
 ## Features
@@ -50,6 +59,7 @@ Find your recordings in the /recordings folder, in the format:
 
 ## Requirements
 
+* node, npm for local development
 * Composer ([installation instructions](https://getcomposer.org/doc/00-intro.md))
 * Docker ([installation instructions](https://docs.docker.com/install/))
 * Docker Compose ([installation instructions](https://docs.docker.com/compose/install/))
