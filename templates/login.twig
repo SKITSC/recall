@@ -2,29 +2,33 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 
 {% include 'head.twig' %}
+
 {% set theme = 'theme-skitsc-theme' %}
 
 <body class="{{ theme }}">
 
-    {{ login_err }}
-
     <div class="login-container">
-
-        <div class="logo">
-            <img width="50" src="static/img/logo.png"/>
-        </div>
         <div class="left">
+            <div class="animation a1 logo">
+                <img width="70px" src="static/img/logo.png"/>
+            </div>
             <div class="header">
             <h2 class="animation a1">Welcome Back</h2>
             <h4 class="animation a2">Don't ever lose a recorded call !</h4>
         </div>
         <form class="form" action="login.php" method="post">
             <input type="text" name="username" class="form-field animation a3" value="{{ username }}" placeholder="username">
-            <span class="invalid-feedback animation a4">{{ username_err }}</span>  
+            <span class="invalid-feedback animation a6">{{ login_err }}</span>  
+            <span class="invalid-feedback animation a6">{{ username_err }}</span>  
             <input type="password" class="form-field animation a4" name="password" placeholder="password">
             <span class="invalid-feedback animation a4">{{ password_err }}</span>
-            <input class="login-button animation a4" type="submit" value="Login">
+            <input class="login-button animation a6" type="submit" value="Login">
         </form>
+        <div class="animation a4 bottom-signature">
+            <div class="animation a4 copyright">
+                <a href="https://skitsc.com"><span>{{ 'now' | date('Y') }} © SKITSC</span></a>
+            </div>
+        </div>
   </div>
   
   <div class="right"></div>

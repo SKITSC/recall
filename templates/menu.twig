@@ -1,5 +1,11 @@
-Hi {{username}}
-<a href="dashboard.php">Home</a>
-<a href="recordings.php">Recordings</a>
-<a href="users.php">Users</a>
-<a href="logout.php">Sign Out</a>
+<div class="menu-container">
+    <div class="menu-nav" id="toggle-menu">
+        <a href="dashboard.php" {% if page == 'dashboard' %} class="active" {% endif %}>Dashboard</a>
+        <a href="recordings.php" {% if page == 'recordings' %} class="active" {% endif %}>Recordings</a>
+        <a href="users.php" {% if page == 'users' %} class="active" {% endif %}>Users</a>
+        <a href="logout.php" class="menu-logout">Sign Out</a>
+        <a href="javascript:void(0);" class="icon" onclick="toggle_menu()">
+            <i class="fa fa-bars"></i>
+        </a>
+    </div>
+</div>
