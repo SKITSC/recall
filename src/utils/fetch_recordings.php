@@ -44,6 +44,16 @@ if (isset($_GET['fetch']) && !empty($_GET['fetch'])) {
     }
 }
 
+header('Content-type: application/json');
+
+$fp = fopen('proc.lock', 'r+');
+if (!flock($fp, LOCK_EX | LOCK_NB, $blocking)) {
+    if ($blocking) {
+        echo "Syncing...";
+        exit;
+    }
+}
+
 $recordings_retrieved = array();
 
 try {
@@ -71,6 +81,8 @@ try {
             $addTime = get_object_vars($response_object['resources'][$i])['properties']['addTime'];
             $recording_url = get_object_vars($response_object['resources'][$i])['properties']['recordingUrl'];
 			$recording_duration_ms = get_object_vars($response_object['resources'][$i])['properties']['recordingDurationMs'];
+            $recording_start_ms = get_object_vars($response_object['resources'][$i])['properties']['recordingStartMs'];
+            $recording_end_ms = get_object_vars($response_object['resources'][$i])['properties']['recordingEndMs'];
             
 			// fetch call details
 			$from_number = 'UNKNOWN';
@@ -138,14 +150,16 @@ try {
 
             // insert in db
             try {
-                $sql = "INSERT INTO backer_recordings (call_uuid, add_time, recording_url, recording_duration, from_number, to_number) VALUES (?, ?, ?, ?, ?, ?)";
+                $sql = "INSERT INTO backer_recordings (call_uuid, add_time, recording_url, recording_duration, recording_start_ms, recording_end_ms, from_number, to_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 	            $stmt = $pdo->prepare($sql);
 	            $stmt->bindParam(1, $call_uuid);
 	            $stmt->bindParam(2, $addTime);
 	            $stmt->bindParam(3, $recording_url);
 				$stmt->bindParam(4, $recording_duration_s);
-				$stmt->bindParam(5, $from_number);
-				$stmt->bindParam(6, $to_number);
+                $stmt->bindParam(5, $recording_start_ms);
+                $stmt->bindParam(6, $recording_end_ms);
+				$stmt->bindParam(7, $from_number);
+				$stmt->bindParam(8, $to_number);
 	
 	            if ($stmt->execute()) {
                     // add this to json array
@@ -154,6 +168,8 @@ try {
                     $record[] = $addTime;
                     $record[] = $recording_url;
                     $record[] = $recording_duration_s;
+                    $record[] = $recording_start_ms;
+                    $record[] = $recording_end_ms;
                     $record[] = $from_number;
                     $record[] = $to_number;
 
@@ -183,8 +199,6 @@ try {
 unset($stmt);
 unset($pdo);
 
-header('Content-type: application/json');
-
 if (!empty($fatal_keys_err)) {
     echo $fatal_keys_err;
 } else {
@@ -193,4 +207,6 @@ if (!empty($fatal_keys_err)) {
 
     echo $recordings_json;
 }
+
+flock($fp, LOCK_UN);
 ?>

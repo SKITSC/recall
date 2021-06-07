@@ -3,7 +3,42 @@
 {% extends 'layout.twig' %}
 
 {% block content %}
-    <h1>Hi {{ username }} !</h1>
-    <p> dashboard content here</p>
-        <a href="/?p=presentation">See more</a>
+    <h3>user: {{ username }}</h3>
+    Last Login: <strong>{{ last_login }}</strong><br><br>
+    <div class="dashboard">
+        <div class="dashboard-component">
+            Total calls in Plivo Cloud: <strong><div id="total-calls-plivo-cloud"><img src="static/img/loader.svg" /></div></strong>
+        </div>
+        <div class="dashboard-component">
+            Total calls in database: <strong>{{ total_calls_db }}</strong>
+        </div>
+        <div class="dashboard-component">
+            Average call time: <strong>{{ average_call_time }}</strong> (s)
+        </div>
+        <div class="dashboard-component">
+            Total size on disk of recordings: <strong><div id="total-size-recordings"><img src="static/img/loader.svg" /></div></strong> (bytes)
+        </div>
+        <div class="dashboard-component" id="recordings-component">
+            10 Last recordings:
+            <div class="table recordings-list">
+            {% if recordings_array is empty %}
+                <strong>no recordings...</strong>
+            {% else %}
+                {% set count = 1 %}
+                {% for recording in recordings_array %}
+                    <div class="tr">
+                        <div class="td recording-element"> {{ "%02d" | format(count) }}.  <span style="float:right">{{ recording.call_uuid }}</span></div>
+                    </div>
+                    {% set count = count + 1 %}
+                {% endfor %}
+            {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div id="sync-recordings" onclick="sync_worker();">
+        <span>Sync</span>
+    </div>
+
+    <script type="text/javascript" src="static/js/main.min.js"></script>
 {% endblock %}

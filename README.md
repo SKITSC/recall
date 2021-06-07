@@ -1,6 +1,11 @@
 # plivo_backup
 Create backup for all your recorded calls, locally on your server.
 
+## Requirements
+
+--- | --- | --- | --- | --- |
+Latest ✔ | Latest ✔ | 10+ ✔ | Latest ✔ | 6.1+ ✔ |
+
 ## Install
 
 Without Docker:

@@ -18,6 +18,14 @@ ini_set('max_execution_time', 0); // 0 = Unlimited
 
 $process_err = "";
 
+$fp = fopen('proc.lock', 'r+');
+if (!flock($fp, LOCK_EX | LOCK_NB, $blocking)) {
+    if ($blocking) {
+        echo "Downloading...";
+        exit;
+    }
+}
+
 $recordings_storage_directory = dirname(__FILE__) . "/../../recordings/";
 if (!file_exists($recordings_storage_directory)) {
     mkdir($recordings_storage_directory, 0644, true);
@@ -83,6 +91,8 @@ if ($stmt->execute()) {
 	$process_err = "Error with STMT!";
 	die();
 }
+
+flock($fp, LOCK_UN);
 
 header('Content-type: application/json');
 echo json_encode($downloaded_array);

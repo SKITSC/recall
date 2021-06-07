@@ -112,13 +112,13 @@ body {
         animation-duration: 1s;
         animation-fill-mode: both;
         animation-delay: 1s;
-        border-right: 1px solid themed('primary');
+        border-right: 1px solid #cccccc;
         align-items: center;
       }
       
       .right {
         flex: 1;
-        background-color: themed('primary');;
+        background-color: themed('primary');
         transition: 1s;
         background-image: url(../img/bg.jpg);
         background-size: cover;
@@ -224,26 +224,32 @@ body {
   @include themify($themes) {
     
     .menu-nav {
-      background-color: themed('primary');
+      background-color: themed('secondary');
+      border-bottom: 1px solid #cccccc;
     }
 
     .menu-nav a {
       float: left;
-      color: themed('secondary');
+      color: themed('primary');
       text-align: center;
       padding: 14px 16px;
       text-decoration: none;
       font-size: 17px;
+      border-right: 1px solid #cccccc;
+    }
+
+    .menu-logout {
+      float: right !important;
     }
 
     .menu-nav a:hover {
-      background-color: themed('complementary');
-      color: black;
+      background-color: themed('primary');
+      color: themed('secondary');
     }
   
     .menu-nav a.active {
-      background-color: themed('third');
-      color: red;
+      background-color: themed('buttons');
+      color: themed('secondary');
     }
   }
 
@@ -269,4 +275,82 @@ body {
       text-align: left;
     }
   }
+}
+
+/* Dashboard */
+
+.app-container {
+
+  padding:20px;
+  padding-top: 0px;
+}
+
+.dashboard {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: baseline;
+  align-content: center;
+}
+
+.dashboard-component {
+  padding: 10px;
+  box-shadow: 0px 0px 10px #cccccc;
+  margin:5px;
+}
+
+#total-calls-plivo-cloud {
+  display: inline-block;
+}
+
+#total-size-recordings {
+  display: inline-block;
+}
+
+#recordings-component {
+  margin-top: 15px;
+}
+
+.recordings-list {
+  padding:10px;
+  display: table;
+}
+
+.tr {
+  display: table-row;
+}
+
+.recording-element {
+  margin:5px;
+  display:table-cell;
+  padding:5px;
+}
+
+.call-count {
+  text-align: right;
+}
+
+#sync-recordings {
+  display: inline-block;
+  position: fixed;
+  bottom:0;
+  right:0;
+  margin-bottom:20px;
+  margin-right:20px;
+  color:black;
+  padding:20px;
+  @include themify($themes) {
+    background: themed('buttons');
+  }
+  box-shadow: 0 0 10px #ccc;
+}
+
+#sync-recordings:hover {
+  color:white;
+  cursor:pointer;
+  @include themify($themes) {
+    background: themed('primary');
+  }
+  box-shadow: 0 0 10px #ccc;
 }

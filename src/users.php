@@ -27,6 +27,7 @@ $twig->addGlobal("username", $_SESSION['username']);
 // add - remove a user
 $username = $password = $password_repeat = "";
 $username_err = $password_err = $password_repeat_err = $process_err = "";
+$user_operation_message = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -106,7 +107,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $stmt->bindParam(":created_at", $created_at, PDO::PARAM_STR);
             
                     if ($stmt->execute()) {
-                        echo "New user added successfully!";
+                        $user_operation_message = "New user added successfully!";
                     } else {
                         echo "error with stmt!";
                     }
@@ -185,7 +186,8 @@ echo $twig->render('users.twig', ['users' => $users_array,
                                 'username_error' => $username_err,
                                 'password_error' => $password_err,
                                 'password_repeat_error' => $password_repeat_err,
-                                'process_error' => $process_err]);
+                                'process_error' => $process_err,
+                                'user_operation_message' => $user_operation_message]);
 ?>
 
 

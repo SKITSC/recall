@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS backer_users (
   username VARCHAR(64) DEFAULT '' NOT NULL,
   password VARCHAR(255) DEFAULT '' NOT NULL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  last_login DATETIME DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY  (id)
 );
 
@@ -24,6 +25,8 @@ CREATE TABLE IF NOT EXISTS backer_recordings (
   call_uuid VARCHAR(36),
   add_time DATETIME,
   recording_url VARCHAR(255),
+  recording_start_ms BIGINT, -- timestamp
+  recording_end_ms BIGINT, -- timestamp
   recording_duration INT,
   from_number VARCHAR(32),
   to_number VARCHAR(32),

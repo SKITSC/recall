@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     
     if (empty($username_err) && empty($password_err)) {
 
-        $sql = "SELECT id, username, password FROM backer_users WHERE username = :username";
+        $sql = "SELECT id, username, password, last_login FROM backer_users WHERE username = :username";
         
         if ($stmt = $pdo->prepare($sql)) {
 
@@ -53,13 +53,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                         $id = $row["id"];
                         $username = $row["username"];
                         $hashed_password = $row["password"];
+                        $last_login = $row["last_login"];
+
                         if (password_verify($password, $hashed_password)) {
                             
                             session_start();
                             
                             $_SESSION["logged_in"] = true;
                             $_SESSION["id"] = $id;
-                            $_SESSION["username"] = $username;                            
+                            $_SESSION["username"] = $username;
+                            $_SESSION["last_login"] = $last_login;          
+                            
+                            $update_login_sql = "UPDATE backer_users SET last_login = NOW() WHERE username = :username";
+                            $stmt = $pdo->prepare($update_login_sql);
+                            $stmt->bindParam(":username", $param_username, PDO::PARAM_STR);
+
+                            if ($stmt->execute()) {
+                                echo "EXECUTED";
+                            } else {
+                                echo "DB error!";
+                            }
                             
                             header("location: dashboard.php");
                         } else{
@@ -72,11 +85,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             } else{
                 echo "Error with stmt!";
             }
-
-            unset($stmt);
         }
     }
-    
+
+    unset($stmt);
     unset($pdo);
 }
 
