@@ -7,19 +7,23 @@ xhttp1.onreadystatechange = function() {
     total_calls_global = this.responseText;
   }
 };
-xhttp1.open("GET", "../../utils/total_recordings.php", false);
+xhttp1.open("GET", "../../utils/total_recordings.php", true);
 xhttp1.send();
 
 postMessage("Syncing...");
 
+setTimeout(function() {
+
 var xhttp2 = new XMLHttpRequest();
-xhttp2.open("GET", "../../utils/fetch_recordings.php?fetch=" + 20, false);
+xhttp2.open("GET", "../../utils/fetch_recordings.php?fetch=" + 20, true);
 xhttp2.send();
 
 postMessage("Synced, Downloading...")
 
 var xhttp3 = new XMLHttpRequest();
-xhttp3.open("GET", "../../utils/download_recordings.php", false);
+xhttp3.open("GET", "../../utils/download_recordings.php", true);
 xhttp3.send();
 
 postMessage("Up to date...");
+
+}, 10000);
