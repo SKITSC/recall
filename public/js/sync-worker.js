@@ -1,29 +1,27 @@
-var total_calls_global = 0;
+/*
+*   Date: 09-06-2021
+*   Author: Iyad Al-Kassab @ SKITSC
+*   Description: webworker that simply fetch the last recordings in the background
+*/
 
-var xhttp1 = new XMLHttpRequest();
-
-xhttp1.onreadystatechange = function() {
-  if (this.readyState == 4 && this.status == 200) {
-    total_calls_global = this.responseText;
-  }
-};
-xhttp1.open("GET", "../../utils/total_recordings.php", true);
-xhttp1.send();
+// without the timeout it blocks the UI thread
+var timeout = 10000;
 
 postMessage("Syncing...");
 
+// what can go wrong if you make synchronous ajax calls using jquery, understanding event loops in javascript
 setTimeout(function() {
 
-var xhttp2 = new XMLHttpRequest();
-xhttp2.open("GET", "../../utils/fetch_recordings.php?fetch=" + 20, true);
-xhttp2.send();
+    var xhttp1 = new XMLHttpRequest();
+    xhttp1.open("GET", "../../utils/fetch_recordings.php?fetch=20", true);
+    xhttp1.send();
 
-postMessage("Synced, Downloading...")
+    postMessage("Synced, Downloading...");
 
-var xhttp3 = new XMLHttpRequest();
-xhttp3.open("GET", "../../utils/download_recordings.php", true);
-xhttp3.send();
+    var xhttp2 = new XMLHttpRequest();
+    xhttp2.open("GET", "../../utils/download_recordings.php", true);
+    xhttp2.send();
 
-postMessage("Up to date...");
+    postMessage("Up to date...");
 
-}, 10000);
+}, timeout);

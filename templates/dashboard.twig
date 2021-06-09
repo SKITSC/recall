@@ -20,24 +20,49 @@
         </div>
         <div class="dashboard-component" id="recordings-component">
             10 Last recordings:
-            <div class="table recordings-list">
+            <table class="recordings-list">
             {% if recordings_array is empty %}
                 <strong>no recordings...</strong>
             {% else %}
+                <tr>
+                    <th class="table-recordings-cell col-title col-call-number"></th>
+                    <!--<th class="table-recordings-cell col-title col-call-uuid">UUID</th>-->
+                    <th class="table-recordings-cell col-title col-call-time">Time</th>
+                    <th class="table-recordings-cell col-title col-call-duration">Duration</th>
+                    <th class="table-recordings-cell col-title col-call-from">From</th>
+                    <th class="table-recordings-cell col-title col-call-to">To</th>
+                    <th class="table-recordings-cell col-title col-play"></th>
+                </tr>
                 {% set count = 1 %}
                 {% for recording in recordings_array %}
-                    <div class="tr">
-                        <div class="td recording-element"> {{ "%02d" | format(count) }}.  <span style="float:right">{{ recording.call_uuid }}</span></div>
-                    </div>
+                    <tr>
+                        <td class="table-recordings-cell col-call-number">{{ "%02d" | format(count) }}.</td>
+                        <!--<td class="table-recordings-cell col-call-uuid">{{ recording.call_uuid }}</td>-->
+                        <td class="table-recordings-cell col-call-time">{{ recording.add_time }}</td>
+                        <td class="table-recordings-cell col-call-duration">{{ recording.recording_duration | date("H:i:s", "+00:00 GMT")}}</td>
+                        <td class="table-recordings-cell col-call-from">{{ recording.from_number[:16]}}</td>
+                        <td class="table-recordings-cell col-call-to">{{ recording.to_number[:16]}}</td>
+                        <td class="table-recordings-cell col-call-play">
+                            <div class="play-button" onclick="play_audio('{{ recording.recording_url }}');">PLAY</div>
+                        </td>
+                    </tr>
                     {% set count = count + 1 %}
                 {% endfor %}
             {% endif %}
-            </div>
+            </table>
         </div>
     </div>
 
-    <div id="sync-recordings" onclick="sync_worker();">
+    <div id="sync-recordings">
         <span>Sync</span>
+    </div>
+
+    <div id="audio-player-container">
+        <audio id="audio-player" preload="metadata"></audio>
+        <button id="play-icon"></button>
+        <span id="current-time" class="time">0:00</span>
+        <input type="range" id="seek-slider" max="100" value="0">
+        <span id="duration" class="time">0:00</span>
     </div>
 
     <script type="text/javascript" src="static/js/main.min.js"></script>

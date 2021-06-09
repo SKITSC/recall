@@ -39,7 +39,7 @@ if ($stmt->execute()) {
 }
 
 $recordings_array = array();
-$sql = 'SELECT * FROM backer_recordings LIMIT 10';
+$sql = 'SELECT * FROM backer_recordings ORDER BY id DESC LIMIT 10';
 
 $stmt = $pdo->prepare($sql);
 
