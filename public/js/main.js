@@ -4,8 +4,12 @@ var total_calls_global = 0;
 
 document.addEventListener("DOMContentLoaded", (event) => {
 
-    load_total_calls_plivo();
-    load_total_size_recordings();
+    fetch_dashboard_data("utils/total_recordings.php", "total-calls-plivo-cloud");
+    fetch_dashboard_data("utils/size_recordings.php", "total-size-recordings");
+    fetch_dashboard_data("utils/utils_recordings.php?data_required=most_dialed_number", "most-dialed-number");
+    fetch_dashboard_data("utils/utils_recordings.php?data_required=most_calling_number", "most-calling-number");
+    fetch_dashboard_data("utils/utils_recordings.php?data_required=shortest_call", "shortest-call");
+    fetch_dashboard_data("utils/utils_recordings.php?data_required=longuest_call", "longuest-call");
     sync_worker();
 });
 
@@ -21,31 +25,17 @@ function toggle_menu() {
     }
 }
 
-function load_total_calls_plivo() {
+function fetch_dashboard_data(endpoint, elementid) {
 
-    var xhttp = new XMLHttpRequest();
+  var xhttp = new XMLHttpRequest();
 
-    xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        total_calls_global = this.responseText;
-        document.getElementById("total-calls-plivo-cloud").innerHTML = total_calls_global;
-      }
-    };
-    xhttp.open("GET", "utils/total_recordings.php", true);
-    xhttp.send();
-}
-
-function load_total_size_recordings() {
-
-    var xhttp = new XMLHttpRequest();
-
-    xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        document.getElementById("total-size-recordings").innerHTML = this.responseText;
-      }
-    };
-    xhttp.open("GET", "utils/size_recordings.php", true);
-    xhttp.send();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById(elementid).innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", endpoint, true);
+  xhttp.send();
 }
 
 // web worker
@@ -59,7 +49,10 @@ function sync_worker() {
       w = new Worker("static/js/sync-worker.min.js");
     }
     w.onmessage = function(event) {
-      document.getElementById("sync-recordings").innerHTML = event.data;
+      var pop_element = document.getElementById("sync-recordings");
+      pop_element.innerHTML = event.data;
+      pop_element.style.opacity = 1;
+      setTimeout(function() {pop_element.style.opacity = 0}, 2000);
     };
   } else {
     document.getElementById("sync-recordings").innerHTML = "Sorry! No Web Worker support.";
@@ -80,13 +73,15 @@ let playState = 'play';
 
 play_icon_container.addEventListener('click', () => {
     if (playState === 'play') {
-        audio.play();
+        audio.pause();
         requestAnimationFrame(whilePlaying);
         playState = 'pause';
+        play_icon_container.className = "play";
     } else {
-        audio.pause();
+        audio.play();
         cancelAnimationFrame(raf);
         playState = 'play';
+        play_icon_container.className = "paused";
     }
 });
 
@@ -159,18 +154,13 @@ function play_audio(audio_url) {
   var audio_player = document.getElementById("audio-player");
   audio_player_container.style.display = "block";
 
-  if (play_icon_container.className === "paused") {
-    play_icon_container.className = "play";
-  } else {
-    play_icon_container.className = "paused";
-  }
-
   audio_player.pause();
   audio_player.setAttribute('src', audio_url);
   audio_player.load();
   //audio_player.play();
 
-  playState = 'pause';
+  play_icon_container.className = "paused";
+  playState = 'play';
   audio_player.play();
   requestAnimationFrame(whilePlaying);
 }

@@ -283,6 +283,7 @@ body {
 
   padding:20px;
   padding-top: 0px;
+  overflow: hidden;
 }
 
 .dashboard {
@@ -300,13 +301,13 @@ body {
   margin:5px;
 }
 
-#total-calls-plivo-cloud {
+.inline-dashboard-data {
   display: inline-block;
 }
 
-#total-size-recordings {
-  display: inline-block;
-}
+#total-calls-plivo-cloud {}
+
+#total-size-recordings {}
 
 #recordings-component {
   margin-top: 15px;
@@ -330,6 +331,7 @@ body {
 }
 
 #sync-recordings {
+  transition: opacity 1s;
   display: inline-block;
   position: fixed;
   bottom:0;
@@ -344,10 +346,16 @@ body {
   box-shadow: 0 0 10px #ccc;
 }
 
+#sync-recordings.fade {
+  opacity: 0;
+}
+
 .table-recordings-cell {
   height:25px;
   margin-right:20px;
   overflow: hidden;
+  vertical-align: middle;
+  line-height:25px;
 }
 
 .col-title {
@@ -356,6 +364,7 @@ body {
 }
 
 .col-call-number {
+  text-align: center;
   width: 30px;
 }
 
@@ -392,6 +401,45 @@ body {
   padding-left:10px;
   width: 50px;
   text-align: center;
+}
+
+.row-hover {
+  @include themify($themes) {
+    color: themed('primary');
+    background-color: themed('secondary');
+  }
+}
+
+.row-hover:hover {
+  cursor: pointer;
+  @include themify($themes) {
+    color: themed('secondary');
+    background-color: themed('primary');
+  }
+}
+
+.play_button {
+  transition: 0.1s;
+  transition-timing-function: linear;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+  width: 20px;
+  height: 20px;
+  float: left;
+  color:black;
+  box-sizing: border-box;
+  border-width: 10px 0px 10px 20px;
+  @include themify($themes) {
+    border-color: transparent transparent transparent themed('buttons');
+  }
+
+  &.paused {
+
+    border-style: double;
+    border-width: 0px 0px 0px 18px;
+  }
 }
 
 /* audio player */

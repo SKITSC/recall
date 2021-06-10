@@ -5,7 +5,7 @@
 */
 
 // without the timeout it blocks the UI thread
-var timeout = 10000;
+var timeout = 0;
 
 postMessage("Syncing...");
 
