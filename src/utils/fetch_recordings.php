@@ -37,14 +37,14 @@ $process_err = "";
 $limit_fetch = 20;
 $recordings_to_fetch_per_update = 20;
 
-//number of fetches per update
+// number of fetches per update
 if (isset($_GET['fetch']) && !empty($_GET['fetch'])) {
     if (filter_var($_GET['fetch'], FILTER_VALIDATE_INT)) {
         $recordings_to_fetch_per_update = $_GET['fetch'];
     }
 }
 
-header('Content-type: application/json');
+ob_start();
 
 $fp = fopen('proc.lock', 'r+');
 if (!flock($fp, LOCK_EX | LOCK_NB, $blocking)) {
@@ -54,6 +54,18 @@ if (!flock($fp, LOCK_EX | LOCK_NB, $blocking)) {
     }
 }
 
+// send response
+echo "OK...";
+header('Content-Length: ' . ob_get_length());
+header('Connection: close');
+ob_end_flush();
+ob_flush();
+flush();
+if (is_callable('fastcgi_finish_request')) {
+    fastcgi_finish_request();
+}
+
+// continue processing...
 $recordings_retrieved = array();
 
 try {
@@ -199,14 +211,18 @@ try {
 unset($stmt);
 unset($pdo);
 
-if (!empty($fatal_keys_err)) {
+// we dont need to send data anymore send data
+/*if (!empty($fatal_keys_err)) {
     echo $fatal_keys_err;
 } else {
-    // send data
-    $recordings_json = json_encode($recordings_retrieved, JSON_FORCE_OBJECT);
+    //$recordings_json = json_encode($recordings_retrieved, JSON_FORCE_OBJECT);
+    //echo $recordings_json;
+}*/
 
-    echo $recordings_json;
+if (!empty($fatal_keys_err)) {
+    error_log($fatal_keys_err);
 }
 
 flock($fp, LOCK_UN);
+
 ?>

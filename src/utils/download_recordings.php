@@ -18,13 +18,28 @@ ini_set('max_execution_time', 0); // 0 = Unlimited
 
 $process_err = "";
 
-$fp = fopen('proc.lock', 'r+');
+ob_start();
+
+// have a separate lock file because it blocks the first one
+$fp = fopen('update.lock', 'r+');
 if (!flock($fp, LOCK_EX | LOCK_NB, $blocking)) {
     if ($blocking) {
         echo "Downloading...";
         exit;
     }
 }
+
+echo "OK...";
+header('Content-Length: ' . ob_get_length());
+header('Connection: close');
+ob_end_flush();
+ob_flush();
+flush();
+if (is_callable('fastcgi_finish_request')) {
+    fastcgi_finish_request();
+}
+
+// continue processing here
 
 $recordings_storage_directory = dirname(__FILE__) . "/../../recordings/";
 if (!file_exists($recordings_storage_directory)) {
@@ -94,7 +109,8 @@ if ($stmt->execute()) {
 
 flock($fp, LOCK_UN);
 
-header('Content-type: application/json');
-echo json_encode($downloaded_array);
+//no need to send a response
+//header('Content-type: application/json');
+//echo json_encode($downloaded_array);
 
 ?>

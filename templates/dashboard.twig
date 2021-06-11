@@ -18,12 +18,24 @@
         <div class="dashboard-component">
             Total size on disk of recordings: <strong><div class="inline-dashboard-data" id="total-size-recordings"><img src="static/img/loader.svg" /></div></strong> (bytes)
         </div>
+        <div class="dashboard-component">
+            Most dialed number: <strong><div class="inline-dashboard-data" id="most-dialed-number"><img src="static/img/loader.svg" /></div></strong>
+        </div>
+        <div class="dashboard-component">
+            Most calling number: <strong><div class="inline-dashboard-data" id="most-calling-number"><img src="static/img/loader.svg" /></div></strong>
+        </div>
+        <div class="dashboard-component">
+            Shortest call: <strong><div class="inline-dashboard-data" id="shortest-call"><img src="static/img/loader.svg" /></div></strong> (s)
+        </div>
+        <div class="dashboard-component">
+            Longuest call: <strong><div class="inline-dashboard-data" id="longuest-call"><img src="static/img/loader.svg" /></div></strong> (s)
+        </div>
         <div class="dashboard-component" id="recordings-component">
             10 Last recordings:
-            <table class="recordings-list">
             {% if recordings_array is empty %}
                 <strong>no recordings...</strong>
             {% else %}
+            <table class="recordings-list">
                 <tr>
                     <th class="table-recordings-cell col-title col-call-number"></th>
                     <!--<th class="table-recordings-cell col-title col-call-uuid">UUID</th>-->
@@ -45,20 +57,8 @@
                     </tr>
                     {% set count = count + 1 %}
                 {% endfor %}
+                </table>
             {% endif %}
-            </table>
-        </div>
-        <div class="dashboard-component">
-            Most dialed number: <strong><div class="inline-dashboard-data" id="most-dialed-number"><img src="static/img/loader.svg" /></div></strong>
-        </div>
-        <div class="dashboard-component">
-            Most calling number: <strong><div class="inline-dashboard-data" id="most-calling-number"><img src="static/img/loader.svg" /></div></strong>
-        </div>
-        <div class="dashboard-component">
-            Shortest call: <strong><div class="inline-dashboard-data" id="shortest-call"><img src="static/img/loader.svg" /></div></strong> (s)
-        </div>
-        <div class="dashboard-component">
-            Longuest call: <strong><div class="inline-dashboard-data" id="longuest-call"><img src="static/img/loader.svg" /></div></strong> (s)
         </div>
     </div>
 
@@ -75,4 +75,5 @@
     </div>
 
     <script type="text/javascript" src="static/js/main.min.js"></script>
+    <script type="text/javascript" src="static/js/dashboard.min.js"></script>
 {% endblock %}

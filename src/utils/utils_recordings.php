@@ -25,6 +25,9 @@ $sql_query = "";
 if (isset($_GET['data_required']) && !empty($_GET['data_required'])) {
 
     switch ($_GET['data_required']) {
+        case "total_calls_number":
+            $sql_query = 'SELECT COUNT(call_uuid) FROM backer_recordings';
+            break;
         case "most_dialed_number":
             $sql_query = "SELECT to_number, count(to_number) AS max_occurence FROM backer_recordings GROUP BY to_number ORDER BY max_occurence DESC LIMIT 1";
             break;

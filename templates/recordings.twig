@@ -3,8 +3,49 @@
 {% extends 'layout.twig' %}
 
 {% block content %}
-    <h1>Hi {{ username }} !</h1>
-    {{ fatal_err }}
-    <p> recordings content here</p>
-        <a href="/?p=presentation">See more</a>
+    <h3>user: {{ username }}</h3>
+    Last Login: <strong>{{ last_login }}</strong><br><br>
+    <div class="app-recordings">
+        <div class="app-recordings-table-component recordings-table-control">
+            <div id="search-component">
+                <input type="text" id="from-to-search-from" placeholder="search by phone number...">
+                <input type="date" id="date-search-id" name="date-search" value="" min="2009-10-31"> <!-- bitcoin creation date ;) -->
+                <button id="search-button">search</button>
+            </div>
+            <div id="table-nav">
+                <div id="nav-item" class="nav-item-number">
+                    <div class="nav-pagination" id="index-min">1</div> - <div class="nav-pagination" id="index-max"></div> of 
+                    <div id="total_calls_number">
+                        <img src="static/img/loader.svg" />
+                    </div>
+                </div>
+                <div class="go-nav-item" id="go-left"><</div><div class="go-nav-item" id="go-right">></div>
+            </div>
+        </div>
+        <div class="app-recordings-table-component">
+            <table class="app-recordings-table">
+                <tr>
+                    <th class="table-recordings-cell col-title col-call-number"></th>
+                    <th class="table-recordings-cell col-title col-call-uuid">UUID</th>
+                    <th class="table-recordings-cell col-title col-call-time">Time</th>
+                    <th class="table-recordings-cell col-title col-call-duration">Duration</th>
+                    <th class="table-recordings-cell col-title col-call-from">From</th>
+                    <th class="table-recordings-cell col-title col-call-to">To</th>
+                </tr>
+                <tr id="loader-row">
+                    <td colspan="6">
+                        <div class="recordings-loader">
+                        
+                            <!-- loader -->
+                            <div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="static/js/main.min.js"></script>
+    <script type="text/javascript" src="static/js/recordings.min.js"></script>
 {% endblock %}

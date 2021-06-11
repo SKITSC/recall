@@ -13,7 +13,7 @@ postMessage("Syncing...");
 setTimeout(function() {
 
     var xhttp1 = new XMLHttpRequest();
-    xhttp1.open("GET", "../../utils/fetch_recordings.php?fetch=20", true);
+    xhttp1.open("GET", "../../utils/fetch_recordings.php?fetch=5", true);
     xhttp1.send();
 
     postMessage("Synced, Downloading...");
