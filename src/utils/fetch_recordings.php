@@ -59,7 +59,6 @@ echo "OK...";
 header('Content-Length: ' . ob_get_length());
 header('Connection: close');
 ob_end_flush();
-ob_flush();
 flush();
 if (is_callable('fastcgi_finish_request')) {
     fastcgi_finish_request();
@@ -118,10 +117,12 @@ try {
 
 				if (isset($call_details_object['properties']['from'])) {
 					$from_number = $call_details_object['properties']['from'];
+                    $from_number = substr($from_number, 0, 255);
 				}
 
 				if (isset($call_details_object['properties']['to'])) {
 					$to_number = $call_details_object['properties']['to'];
+                    $to_number = substr($to_number, 0, 255);
 				}
 			} catch (PlivoRestException $ex) {
  			   $process_err = $ex;

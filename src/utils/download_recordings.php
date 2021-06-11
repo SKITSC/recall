@@ -33,7 +33,6 @@ echo "OK...";
 header('Content-Length: ' . ob_get_length());
 header('Connection: close');
 ob_end_flush();
-ob_flush();
 flush();
 if (is_callable('fastcgi_finish_request')) {
     fastcgi_finish_request();
