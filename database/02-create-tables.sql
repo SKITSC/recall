@@ -3,6 +3,8 @@
 -- author: Iyad Al-Kassab @ SKITSC
 -- description: create's tables on deployement
 
+CREATE DATABASE IF NOT EXISTS `plivo_backer` CHARACTER SET 'utf8';
+
 use plivo_backer;
 
 -- DROP TABLE IF EXISTS `backer_users`;
