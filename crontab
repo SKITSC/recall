@@ -1,0 +1,2 @@
+* * * * * php /var/www/utils/fetch_recordings.php > /dev/null 2>&1
+0 2 * * * php /var/www/utils/download_recordings.php > /dev/null 2>&1

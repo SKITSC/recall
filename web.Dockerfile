@@ -7,6 +7,7 @@ RUN  DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install git -y
+RUN apt-get install cron -y
 
 RUN docker-php-ext-install pdo pdo_mysql
 
@@ -22,6 +23,12 @@ ENV APACHE_PID_FILE /var/run/apache2.pid
 #config
 ADD .env /var/www
 ADD config.php /var/www
+
+#cron
+ADD crontab /etc/cron.d/hello-cron
+RUN chmod 0755 /etc/cron.d/hello-cron
+
+ADD utils /var/www
 
 #source
 ADD src /var/www/html
@@ -45,4 +52,5 @@ RUN service apache2 restart
 
 EXPOSE 80
 
+RUN cron
 CMD /usr/sbin/apache2ctl -D FOREGROUND

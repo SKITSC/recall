@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     fetch_dashboard_data("utils/utils_recordings.php?data_required=most_calling_number", "most-calling-number");
     fetch_dashboard_data("utils/utils_recordings.php?data_required=shortest_call", "shortest-call");
     fetch_dashboard_data("utils/utils_recordings.php?data_required=longuest_call", "longuest-call");
-    sync_worker();
 });
 
 function fetch_dashboard_data(endpoint, elementid) {

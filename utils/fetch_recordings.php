@@ -6,12 +6,9 @@
 * Description: fetch recordings utility, this would be running as a cron job every minute, if you need last phone calls directly accessible in the system
 */
 
-require_once(dirname(__FILE__) . "/../middlewares/auth.php");
+require_once(dirname(__FILE__) . '/../vendor/autoload.php'); 
 
-require_once(dirname(__FILE__) . '/../../vendor/autoload.php');
-
-require_once(dirname(__FILE__) . "/../../config.php");
-require_once(dirname(__FILE__) . "/../db.php");
+require_once(dirname(__FILE__) . "/../config.php");
 
 // set max execution time to unlimited
 ini_set('max_execution_time', 0); // 0 = Unlimited
@@ -44,8 +41,6 @@ if (isset($_GET['fetch']) && !empty($_GET['fetch'])) {
     }
 }
 
-ob_start();
-
 $fp = fopen('proc.lock', 'r+');
 if (!flock($fp, LOCK_EX | LOCK_NB, $blocking)) {
     if ($blocking) {
@@ -54,14 +49,28 @@ if (!flock($fp, LOCK_EX | LOCK_NB, $blocking)) {
     }
 }
 
-// send response
-echo "OK...";
-header('Content-Length: ' . ob_get_length());
-header('Connection: close');
-ob_end_flush();
-flush();
-if (is_callable('fastcgi_finish_request')) {
-    fastcgi_finish_request();
+$db_host = $_ENV['DB_HOST'];
+$db_port = $_ENV['DB_PORT'];
+$db_name = $_ENV['DB_NAME'];
+$db_username = $_ENV['DB_USERNAME'];
+$db_password = $_ENV['DB_PASSWORD'];
+
+define('DB_HOST', $db_host);
+define('DB_PORT', $db_port);
+define('DB_NAME', $db_name);
+define('DB_USERNAME', $db_username);
+define('DB_PASSWORD', $db_password);
+
+try {
+
+    $dsn = "mysql:host=" . DB_HOST . ":" . DB_PORT. ";dbname=" . DB_NAME;
+
+    $pdo = new PDO($dsn, DB_USERNAME, DB_PASSWORD);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+} catch(PDOException $e){
+
+    die("ERROR: Could not connect. " . $e->getMessage());
 }
 
 // continue processing...
@@ -212,16 +221,11 @@ try {
 unset($stmt);
 unset($pdo);
 
-// we dont need to send data anymore send data
-/*if (!empty($fatal_keys_err)) {
+if (!empty($fatal_keys_err)) {
     echo $fatal_keys_err;
 } else {
-    //$recordings_json = json_encode($recordings_retrieved, JSON_FORCE_OBJECT);
-    //echo $recordings_json;
-}*/
-
-if (!empty($fatal_keys_err)) {
-    error_log($fatal_keys_err);
+    $recordings_json = json_encode($recordings_retrieved, JSON_FORCE_OBJECT);
+    echo $recordings_json;
 }
 
 flock($fp, LOCK_UN);

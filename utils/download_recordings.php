@@ -6,22 +6,14 @@
 * Description: download recordings utility
 */
 
-require_once(dirname(__FILE__) . "/../middlewares/auth.php");
+require_once(dirname(__FILE__) . '/../vendor/autoload.php'); 
 
-require_once(dirname(__FILE__) . '/../../vendor/autoload.php');
+require_once(dirname(__FILE__) . "/../config.php");
 
-require_once(dirname(__FILE__) . "/../../config.php");
-require_once(dirname(__FILE__) . "/../db.php");
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . "/..");
+$dotenv->load();
 
-// set max execution time to unlimited
-ini_set('max_execution_time', 0); // 0 = Unlimited
-
-$process_err = "";
-
-ob_start();
-
-// have a separate lock file because it blocks the first one
-$fp = fopen('update.lock', 'r+');
+$fp = fopen('proc.lock', 'r+');
 if (!flock($fp, LOCK_EX | LOCK_NB, $blocking)) {
     if ($blocking) {
         echo "Downloading...";
@@ -29,18 +21,38 @@ if (!flock($fp, LOCK_EX | LOCK_NB, $blocking)) {
     }
 }
 
-echo "OK...";
-header('Content-Length: ' . ob_get_length());
-header('Connection: close');
-ob_end_flush();
-flush();
-if (is_callable('fastcgi_finish_request')) {
-    fastcgi_finish_request();
+$db_host = $_ENV['DB_HOST'];
+$db_port = $_ENV['DB_PORT'];
+$db_name = $_ENV['DB_NAME'];
+$db_username = $_ENV['DB_USERNAME'];
+$db_password = $_ENV['DB_PASSWORD'];
+
+define('DB_HOST', $db_host);
+define('DB_PORT', $db_port);
+define('DB_NAME', $db_name);
+define('DB_USERNAME', $db_username);
+define('DB_PASSWORD', $db_password);
+
+try {
+
+    $dsn = "mysql:host=" . DB_HOST . ":" . DB_PORT. ";dbname=" . DB_NAME;
+
+    $pdo = new PDO($dsn, DB_USERNAME, DB_PASSWORD);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+} catch(PDOException $e){
+
+    die("ERROR: Could not connect. " . $e->getMessage());
 }
+
+// set max execution time to unlimited
+ini_set('max_execution_time', 0); // 0 = Unlimited
+
+$process_err = "";
 
 // continue processing here
 
-$recordings_storage_directory = dirname(__FILE__) . "/../../recordings/";
+$recordings_storage_directory = dirname(__FILE__) . "/../recordings/";
 if (!file_exists($recordings_storage_directory)) {
     mkdir($recordings_storage_directory, 0755, true);
 }
@@ -106,10 +118,13 @@ if ($stmt->execute()) {
 	die();
 }
 
+// unset db
+unset($stmt);
+unset($pdo);
+
 flock($fp, LOCK_UN);
 
-//no need to send a response
-//header('Content-type: application/json');
-//echo json_encode($downloaded_array);
+header('Content-type: application/json');
+echo json_encode($downloaded_array);
 
 ?>
