@@ -43,7 +43,7 @@ if (is_callable('fastcgi_finish_request')) {
 
 $recordings_storage_directory = dirname(__FILE__) . "/../../recordings/";
 if (!file_exists($recordings_storage_directory)) {
-    mkdir($recordings_storage_directory, 0644, true);
+    mkdir($recordings_storage_directory, 0755, true);
 }
 
 $sql = 'SELECT * FROM backer_recordings WHERE downloaded=0';
@@ -80,7 +80,7 @@ if ($stmt->execute()) {
 		$folder = $recordings_storage_directory . $year . "/" . $month . "/" . $day . "/";
         
 		if (!file_exists($folder)) {
-			mkdir($folder, 0644, true);
+			mkdir($folder, 0755, true);
 		}
 		
 		$filename = $time . "-id-" . $db_id . ".mp3";

@@ -57,6 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
                         if (password_verify($password, $hashed_password)) {
                             
+                            session_write_close();
                             session_start();
                             
                             $_SESSION["logged_in"] = true;
@@ -68,13 +69,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                             $stmt = $pdo->prepare($update_login_sql);
                             $stmt->bindParam(":username", $param_username, PDO::PARAM_STR);
 
-                            if ($stmt->execute()) {
-                                echo "EXECUTED";
-                            } else {
+                            if ($stmt->execute()) {} else {
                                 echo "DB error!";
                             }
                             
                             header("location: dashboard.php");
+                            exit();
                         } else{
                             $login_err = "Invalid username or password.";
                         }

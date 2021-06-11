@@ -30,8 +30,8 @@ CREATE TABLE IF NOT EXISTS backer_recordings (
   recording_start_ms BIGINT, -- timestamp
   recording_end_ms BIGINT, -- timestamp
   recording_duration INT,
-  from_number VARCHAR(32),
-  to_number VARCHAR(32),
+  from_number VARCHAR(256), -- includes long SIP URI which maximum sizes is 256 chars
+  to_number VARCHAR(256),
   downloaded BOOLEAN NOT NULL DEFAULT 0,
   PRIMARY KEY  (id)
 );
