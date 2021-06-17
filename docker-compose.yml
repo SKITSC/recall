@@ -15,7 +15,7 @@ services:
                 condition: service_healthy
         restart: always
     db:
-        container_name: ${DB_HOST}
+        container_name: plivo_db
         build:
             context: ./
             dockerfile: db.Dockerfile
@@ -29,7 +29,7 @@ services:
             - plivo_volume:/var/lib/mysql
         restart: always
         healthcheck:
-            test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+            test: mysqladmin ping -h 127.0.0.1 -u $$DB_USERNAME --password=$$DB_PASSWORD
 
 volumes:
     plivo_volume:
