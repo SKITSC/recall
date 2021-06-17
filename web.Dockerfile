@@ -49,6 +49,8 @@ RUN service apache2 restart
 EXPOSE 80
 
 #cron
+ADD utils /var/www
+RUN chmod -R 755 /var/www/utils
 ADD crontab /etc/crontabs/root
 RUN chmod 0755 /etc/crontabs/root
 
