@@ -1,4 +1,4 @@
-version: "3.2"
+version: "2.1"
 
 services:
     web:
@@ -11,7 +11,8 @@ services:
         ports:
             - "80:80"
         depends_on: 
-            - db
+            db:
+                condition: service_healthy
         restart: always
     db:
         container_name: ${DB_HOST}
@@ -27,7 +28,9 @@ services:
         volumes:
             - plivo_volume:/var/lib/mysql
         restart: always
-    
+        healthcheck:
+            test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+
 volumes:
     plivo_volume:
 
