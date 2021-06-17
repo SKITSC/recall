@@ -24,18 +24,10 @@ ENV APACHE_PID_FILE /var/run/apache2.pid
 ADD .env /var/www
 ADD config.php /var/www
 
-ADD utils /var/www
-
 #source
 ADD src /var/www/html
 ADD templates /var/www/templates
 ADD config/apache-config.conf /etc/apache2/sites-enabled/000-default.conf
-
-RUN chmod -R 755 /var/www/html
-RUN chown -R www-data:www-data /var/www/html
-RUN chmod -R 755 /var/www
-RUN chown -R www-data:www-data /var/www
-RUN ls -la /var/www/html
 
 RUN curl -sS https://getcomposer.org/installer | \
     php -- --install-dir=/usr/bin --filename=composer
@@ -49,8 +41,18 @@ RUN service apache2 restart
 EXPOSE 80
 
 #cron
-ADD utils /var/www
+ADD utils /var/www/utils
 RUN chmod -R 755 /var/www/utils
+RUN mkdir logs
+RUN touch logs/fetch_logs
+RUN touch logs/download_logs
+
+RUN chmod -R 755 /var/www/html
+RUN chown -R www-data:www-data /var/www/html
+RUN chmod -R 755 /var/www
+RUN chown -R www-data:www-data /var/www
+RUN ls -la /var/www/html
+
 ADD crontab /etc/crontabs/root
 RUN chmod 0755 /etc/crontabs/root
 

@@ -15,7 +15,7 @@ ini_set('max_execution_time', 0); // 0 = Unlimited
 
 // environment
 
-$dotenv = Dotenv\Dotenv::createImmutable(dirname(__FILE__) . "/../..");
+$dotenv = Dotenv\Dotenv::createImmutable(dirname(__FILE__) . "/..");
 $dotenv->load();
 
 // plivo api
