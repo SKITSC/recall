@@ -53,8 +53,8 @@ RUN chmod -R 755 /var/www
 RUN chown -R www-data:www-data /var/www
 RUN ls -la /var/www/html
 
-ADD crontab /etc/crontabs/root
-RUN chmod 0755 /etc/crontabs/root
-
+ADD crontab /etc/cron.d/tasks
+RUN chmod 0755 /etc/cron.d/tasks
 RUN cron
+
 CMD /usr/sbin/apache2ctl -D FOREGROUND
