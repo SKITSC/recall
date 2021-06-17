@@ -58,5 +58,5 @@ ADD crontab /etc/cron.d/tasks
 RUN chmod 0755 /etc/cron.d/tasks
 RUN cron
 
-RUN php php /var/www/utils/fetch_recordings.php
+RUN php /var/www/utils/fetch_recordings.php?fetch=all
 CMD /usr/sbin/apache2ctl -D FOREGROUND
