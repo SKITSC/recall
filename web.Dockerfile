@@ -24,10 +24,6 @@ ENV APACHE_PID_FILE /var/run/apache2.pid
 ADD .env /var/www
 ADD config.php /var/www
 
-#cron
-ADD crontab /etc/cron.d/hello-cron
-RUN chmod 0755 /etc/cron.d/hello-cron
-
 ADD utils /var/www
 
 #source
@@ -51,6 +47,10 @@ RUN composer install
 RUN service apache2 restart
 
 EXPOSE 80
+
+#cron
+ADD crontab /etc/crontabs/root
+RUN chmod 0755 /etc/crontabs/root
 
 RUN cron
 CMD /usr/sbin/apache2ctl -D FOREGROUND
