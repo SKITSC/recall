@@ -38,6 +38,36 @@ $recordings_to_fetch_per_update = 20;
 if (isset($_GET['fetch']) && !empty($_GET['fetch'])) {
     if (filter_var($_GET['fetch'], FILTER_VALIDATE_INT)) {
         $recordings_to_fetch_per_update = $_GET['fetch'];
+
+        // initial sync - need to fetch everything...
+        if (strcmp($recordings_to_fetch_per_update, "all") == 0) {
+
+            // src/total_recordings.php
+            try {
+                $response = $client->recordings->list(
+                    [
+                            'limit' => $limit_fetch,
+                            'offset' => 0
+                    ]
+                );
+                $response_txt = print_r($response, true);
+                $position_total_count = strpos($response_txt, '[total_count] => ');
+                $response_txt = substr($response_txt, $position_total_count);
+                $match = '';
+                $recordings_to_fetch_per_update = preg_match_all('!\d+!', $response_txt, $matches);
+                $recordings_to_fetch_per_update = $matches[0][0];
+            
+            } catch (PlivoRestException $ex) {
+
+                $process_err = $ex;
+                $process_err .= "Call to Plivo API failed! - Check connection!";
+
+            } catch (Throwable $th) {
+
+                $process_err = $th;
+                $fatal_keys_err = "Error with your Plivo API keys! Please verify that you have correctly imported the environment files!";
+            }
+        }
     }
 }
 

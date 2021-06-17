@@ -53,8 +53,10 @@ RUN chmod -R 755 /var/www
 RUN chown -R www-data:www-data /var/www
 RUN ls -la /var/www/html
 
+#cron
 ADD crontab /etc/cron.d/tasks
 RUN chmod 0755 /etc/cron.d/tasks
 RUN cron
 
+RUN php php /var/www/utils/fetch_recordings.php
 CMD /usr/sbin/apache2ctl -D FOREGROUND
