@@ -20,19 +20,67 @@ $dotenv->load();
 
 $process_err = "";
 
-$sql_query = "";
+$sql_query = $stmt = "";
 
-if (isset($_GET['search']) && !empty($_GET['search'])) {
+if (isset($_GET['search_phone']) && !empty($_GET['search_phone'])) {
+    $search_phone = htmlspecialchars($_GET['search_phone']);
+    $page = 1;
+    if (isset($_GET['page']) && !empty($_GET['page'])) {
+        if (is_numeric($_GET['page'])) {
+            $page = $_GET['page'];
+        }
+    }
+    $sql_query = "SELECT * FROM backer_recordings WHERE (from_number =:from OR to_number =:to) LIMIT" . ($page - 1) * 50 . ",50";
+    
+    $stmt = $pdo->prepare($sql_query);
 
+    $stmt->bindParam(":from", $search_phone);
+    $stmt->bindParam(":to", $search_phone);
+} else {
+    if (isset($_GET['page']) && !empty($_GET['page'])) {
+        $page = $_GET['page'];
+        if (is_numeric($page)) {
+            $sql_query = "SELECT * FROM backer_recordings LIMIT " . ($page - 1) * 50 . ",50";
+
+            $stmt = $pdo->prepare($sql_query);
+        } else {
+            $process_err = "page must be numeric";
+        }
+    } else {
+        $sql_query = "SELECT * FROM backer_recordings LIMIT 50";
+    }
 }
 
 $util_data = "";
 
-if (!empty($sql_query)) {
-    $stmt = $pdo->prepare($sql_query);
-
+if (!empty($stmt)) {
     if ($stmt->execute()) {
-        $util_data = $stmt->fetchColumn();
+        while ($row = $stmt->fetch()) {
+            $util_data .= "<tr class='row-hover' onclick=play_audio(" . "'" . $row[3] . "'" . ")>";
+                $util_data .= "<td class='table-recordings-cell col-call-number'>";
+                $util_data .= sprintf("%02d", $row[0]) . ". ";
+                $util_data .= "</td>";
+                $util_data .= "<td class='table-recordings-cell col-call-uuid'>";
+                $util_data .= $row[1];
+                $util_data .= "</td>";
+                $util_data .= "<td class='table-recordings-cell col-call-time'>";
+                $util_data .= $row[2];
+                $util_data .= "</td>";
+                $util_data .= "<td class='table-recordings-cell col-call-duration'>";
+                $duration_seconds = $row[6];
+                $util_data .= sprintf("%02d:%02d:%02d", $duration_seconds/3600, $duration_seconds/60 % 60, $duration_seconds % 60 );
+                $util_data .= "</td>";
+                $util_data .= "<td class='table-recordings-cell col-call-from'>";
+                $util_data .= $row[7];
+                $util_data .= "</td>";
+                $util_data .= "<td class='table-recordings-cell col-call-to'>";
+                $util_data .= $row[8];
+                $util_data .= "</td>";
+                $util_data .= "<td class='table-recordings-cell col-download'>";
+                $util_data .= "<a class='download_button' target='_blank' rel='noopener noreferrer' href='" . $row[3] . "'><img class='download-img' src='static/img/download.svg' /></div></a>";
+                $util_data .= "</td>";
+            $util_data .= "</tr>";
+        }
     } else {
         $process_err = "error with stmt!";
     }

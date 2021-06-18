@@ -62,18 +62,13 @@
         </div>
     </div>
 
-    <div id="sync-recordings">
+    <!--<div id="sync-recordings">
         <span>Syncing...</span>
-    </div>
+    </div>-->
 
-    <div id="audio-player-container">
-        <audio id="audio-player" preload="metadata"></audio>
-        <button id="play-icon"></button>
-        <span id="current-time" class="time">0:00</span>
-        <input type="range" id="seek-slider" max="100" value="0">
-        <span id="duration" class="time">0:00</span>
-    </div>
+    {% include 'audio_player.twig' %}
 
     <script type="text/javascript" src="static/js/main.min.js"></script>
+    <script type="text/javascript" src="static/js/audio.min.js"></script>
     <script type="text/javascript" src="static/js/dashboard.min.js"></script>
 {% endblock %}

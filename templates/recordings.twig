@@ -9,9 +9,15 @@
         <div class="app-recordings-table-component recordings-table-control">
             <div id="search-component">
                 <input type="text" id="from-to-search-from" placeholder="search by phone number...">
-                <input type="date" id="date-search-id" name="date-search" value="" min="2009-10-31"> <!-- bitcoin creation date ;) -->
-                <button id="search-button">search</button>
+                <button id="search-button" onclick="search_phone()">search</button>
             </div>
+        </div>
+        <div class="app-recordings-table-component recordings-table-control">
+            <div id="search-component">
+                <input type="date" id="date-search-id" name="date-search" value="" min="2009-10-31"> <!-- bitcoin creation date ;) -->
+            </div>
+        </div>
+        <div class="app-recordings-table-component">
             <div id="table-nav">
                 <div id="nav-item" class="nav-item-number">
                     <div class="nav-pagination" id="index-min">1</div> - <div class="nav-pagination" id="index-max"></div> of 
@@ -19,11 +25,11 @@
                         <img src="static/img/loader.svg" />
                     </div>
                 </div>
-                <div class="go-nav-item" id="go-left"><</div><div class="go-nav-item" id="go-right">></div>
+                <button class="go-nav-item" id="go-left" onclick="previous_page()"><</button><button class="go-nav-item" id="go-right" onclick="next_page()">></button>
             </div>
         </div>
-        <div class="app-recordings-table-component">
-            <table class="app-recordings-table">
+        <div class="app-recordings-table-component" id="id-recording-table">
+            <table class="app-recordings-table" id="app-recordings-table">
                 <tr>
                     <th class="table-recordings-cell col-title col-call-number"></th>
                     <th class="table-recordings-cell col-title col-call-uuid">UUID</th>
@@ -46,6 +52,9 @@
         </div>
     </div>
 
+    {% include 'audio_player.twig' %}
+
     <script type="text/javascript" src="static/js/main.min.js"></script>
+    <script type="text/javascript" src="static/js/audio.min.js"></script>
     <script type="text/javascript" src="static/js/recordings.min.js"></script>
 {% endblock %}

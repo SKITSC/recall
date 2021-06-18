@@ -371,6 +371,7 @@ body {
 .col-call-uuid {
   padding-left:10px;
   width: 375px;
+  text-align: center;
 }
 
 .col-call-time {
@@ -604,13 +605,58 @@ body {
 
 /* recordings page */
 
-.app-recordings {}
+.app-recordings {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: baseline;
+  align-content: center;
+}
 
 .app-recordings-table-component {
   padding: 10px;
   box-shadow: 0px 0px 10px #cccccc;
   margin:5px;
-  margin-bottom:20px;
+}
+
+#id-recording-table {
+  overflow-x: scroll;
+}
+
+.col-download {
+  width: 20px;
+}
+
+@media screen and (max-width: 1300px) {
+
+  .col-call-number {
+    font-size: 14px;
+    display: none;
+  }
+
+  .col-call-time {
+    font-size: 14px;
+    min-width: 170px;
+  }
+
+  .col-call-duration {
+    font-size: 14px;
+  }
+
+  .col-call-from {
+    max-width: 220px;
+    font-size:14px;
+    overflow-x: hidden;
+  }
+
+  .col-call-to {
+    font-size:14px;
+  }
+
+  .col-call-uuid {
+    display: none;
+  }
 }
 
 .recording-table-control {
@@ -618,8 +664,9 @@ body {
 }
 
 .app-recordings-table {
-  border-collapse: collapse;
-  width: 100%;
+  white-space: nowrap;
+  table-layout: fixed;
+  padding: 10px;
 }
 
 .recordings-loader {}
@@ -633,10 +680,7 @@ body {
   display: inline-block;
 }
 
-#table-nav {
-  display: inline-block;
-  float: right;
-}
+#table-nav {}
 
 .nav-item-number {
   display: inline-block;
@@ -654,6 +698,25 @@ body {
 
 .go-nav-item {
   display: inline-block;
+  font-weight: bold;
+  font-size: 18px;
+  text-align: center;
+  padding: 5px;
+  width: 50px;
+  border: 1px solid lightgrey;
+}
+
+.go-nav-item:hover {
+  background: black;
+  color:white;
+}
+
+.download-img {
+  width:15px;
+}
+
+.download-button {
+  background: white;
 }
 
 /* css loader */

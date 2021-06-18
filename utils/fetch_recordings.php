@@ -6,6 +6,8 @@
 * Description: fetch recordings utility, this would be running as a cron job every minute, if you need last phone calls directly accessible in the system
 */
 
+global $argc, $argv;
+
 require_once(dirname(__FILE__) . '/../vendor/autoload.php'); 
 
 require_once(dirname(__FILE__) . "/../config.php");
@@ -41,33 +43,35 @@ if (isset($_GET['fetch']) && !empty($_GET['fetch'])) {
     }
 }
 
-// initial sync - need to fetch everything...
-if (strcmp($argv[1], 'all') == 0) {
+if ($argc == 2) {
+    // initial sync - need to fetch everything...
+    if (strcmp($argv[1], 'all') == 0) {
 
-    // src/total_recordings.php
-    try {
-        $response = $client->recordings->list(
-            [
-                    'limit' => $limit_fetch,
-                    'offset' => 0
-            ]
-        );
-        $response_txt = print_r($response, true);
-        $position_total_count = strpos($response_txt, '[total_count] => ');
-        $response_txt = substr($response_txt, $position_total_count);
-        $match = '';
-        $recordings_to_fetch_per_update = preg_match_all('!\d+!', $response_txt, $matches);
-        $recordings_to_fetch_per_update = $matches[0][0];
-    
-    } catch (PlivoRestException $ex) {
+        // src/total_recordings.php
+        try {
+            $response = $client->recordings->list(
+                [
+                        'limit' => $limit_fetch,
+                        'offset' => 0
+                ]
+            );
+            $response_txt = print_r($response, true);
+            $position_total_count = strpos($response_txt, '[total_count] => ');
+            $response_txt = substr($response_txt, $position_total_count);
+            $match = '';
+            $recordings_to_fetch_per_update = preg_match_all('!\d+!', $response_txt, $matches);
+            $recordings_to_fetch_per_update = $matches[0][0];
+        
+        } catch (PlivoRestException $ex) {
 
-        $process_err = $ex;
-        $process_err .= "Call to Plivo API failed! - Check connection!";
+            $process_err = $ex;
+            $process_err .= "Call to Plivo API failed! - Check connection!";
 
-    } catch (Throwable $th) {
+        } catch (Throwable $th) {
 
-        $process_err = $th;
-        $fatal_keys_err = "Error with your Plivo API keys! Please verify that you have correctly imported the environment files!";
+            $process_err = $th;
+            $fatal_keys_err = "Error with your Plivo API keys! Please verify that you have correctly imported the environment files!";
+        }
     }
 }
 
