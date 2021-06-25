@@ -8,13 +8,15 @@
 const recordings_per_page = 50;
 
 let g_recordings_offset = 0;
-let g_current_page = 1;
+let g_current_page = 0; //will automatically go to 1 on DOMContentLoaded
 
 var current_min_index = 0;
 var current_max_index = recordings_per_page;
 
 var index_min_element = document.getElementById("index-min");
 var index_max_element = document.getElementById("index-max");
+
+var g_is_search = false;
 
 document.addEventListener("DOMContentLoaded", (event) => {
 
@@ -27,15 +29,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
         total_calls_number_element.innerHTML = response;
         
         calculate_pagination();
-    });
 
-    fetch_data("utils/list_recordings.php", "app-recordings-table", true, function(response) {
-
-        var loader_row = document.getElementById("loader-row");
-        loader_row.remove();
-
-        var recordings_table = document.getElementById("app-recordings-table").tBodies[0];
-        recordings_table.innerHTML += response;
+        g_current_page = 0;
+        next_page();
     });
 });
 
@@ -115,7 +111,12 @@ function restore_table() {
             document.getElementById("go-right").disabled = false;
         }
     };
-    xhttp.open("GET", "utils/list_recordings.php?page=" + g_current_page);
+    if (g_is_search == false) {
+        xhttp.open("GET", "utils/list_recordings.php?page=" + g_current_page);
+    } else {
+        var search = document.getElementById("from-to-search-from").value;
+        xhttp.open("GET", "utils/list_recordings.php?search_phone=" + search + "&page=" + g_current_page);
+    }
     xhttp.send();  
 }
 
@@ -152,24 +153,54 @@ function previous_page() {
 
 function search_phone() {
 
-    reset_table();
-
     var search = document.getElementById("from-to-search-from").value;
+    if (!search) {
 
-    var xhttp = new XMLHttpRequest();
-  
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            var loader_row = document.getElementById("loader-row");
-            loader_row.remove();
-    
-            var recordings_table = document.getElementById("app-recordings-table").tBodies[0];
-            recordings_table.innerHTML += this.responseText;
+        // if it's not empty
+    } else {
 
-            document.getElementById("go-left").disabled = false;
-            document.getElementById("go-right").disabled = false;
+        g_current_page = 1;
+        if (g_is_search == false) {
+            g_is_search = true;
         }
-    };
-    xhttp.open("GET", "utils/list_recordings.php?search_phone=" + search + "&page=" + g_current_page);
-    xhttp.send();  
+        reset_table();
+
+        var total_calls_number_element = document.getElementById("total_calls_number");
+
+        var xhttp = new XMLHttpRequest();
+    
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                total_calls_number_element.innerHTML = this.responseText;
+                if (this.responseText == "No recordings...") {
+                    document.getElementById("nav-item").style.display = "none";
+                    var recordings_table = document.getElementById("app-recordings-table").tBodies[0];
+                    recordings_table.innerHTML = "No recordings found...";
+                } else {
+                    document.getElementById("nav-item").style.display = "inline-block";
+
+                    calculate_pagination();
+
+                    var xhttp1 = new XMLHttpRequest();
+        
+                    xhttp1.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200) {
+                            var loader_row = document.getElementById("loader-row");
+                            loader_row.remove();
+                    
+                            var recordings_table = document.getElementById("app-recordings-table").tBodies[0];
+                            recordings_table.innerHTML += this.responseText;
+                
+                            document.getElementById("go-left").disabled = false;
+                            document.getElementById("go-right").disabled = false;
+                        }
+                    };
+                    xhttp1.open("GET", "utils/list_recordings.php?search_phone=" + search + "&page=" + g_current_page);
+                    xhttp1.send();
+                }
+            }
+        };
+        xhttp.open("GET", "utils/list_recordings.php?search_phone=" + search);
+        xhttp.send();
+    }
 }

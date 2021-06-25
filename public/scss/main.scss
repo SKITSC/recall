@@ -719,6 +719,29 @@ body {
   background: white;
 }
 
+#from-to-search-from {
+  padding: 6px;
+  font-size: 16px;
+}
+
+#search-button {
+  @include themify($themes) {
+    background: themed('primary');
+    color: themed("secondary");
+  }
+  border: none;
+  padding: 9px;
+  letter-spacing: 1px;
+}
+
+#search-button:hover {
+  @include themify($themes) {
+    background: themed('third');
+    color: themed("secondary");
+  }
+  cursor: pointer;
+}
+
 /* css loader */
 
 .lds-grid {

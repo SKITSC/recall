@@ -3,8 +3,9 @@
 {% extends 'layout.twig' %}
 
 {% block content %}
-    <h1>Users</h1>
-
+    <h3>user: {{ username }}</h3>
+    Last Login: <strong>{{ last_login }}</strong><br>
+    <h3>Users</h3>
     <div class="user-operation-message">
         {{ user_operation_message }}
     </div>
@@ -23,7 +24,7 @@
     {% endfor %}
     </ul>
 
-    <h1>New User</h1>
+    <h3>New User</h3>
     <span class="invalid-feedback">{{process_error}}</span>
     <form method="POST">
         <label>Username</label>

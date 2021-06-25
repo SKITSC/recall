@@ -182,6 +182,8 @@ if ($stmt = $pdo->prepare($sql)) {
 unset($stmt);
 unset($pdo);
 
+$twig->addGlobal("last_login", $_SESSION['last_login']);
+
 echo $twig->render('users.twig', ['users' => $users_array, 
                                 'username_error' => $username_err,
                                 'password_error' => $password_err,
