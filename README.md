@@ -1,8 +1,6 @@
 # ⋅ RECALL
 Create backup for all your recorded calls, locally on your server.
 
-Don't ever lose a recorded call!
-
 ## Browser support
 
 ![Chrome](https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png) | ![Firefox](https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png) | ![IE](https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png) | ![Opera](https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png) | ![Safari](https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png)
@@ -81,7 +79,7 @@ npm run watch
 
 * Simple and responsive web interface
 * 100% customizable (check out /public/scss/themes.scss)
-* Downloads and store the .mp3 files directly on your system
+* Automatically downloads and store .mp3 files directly on your system
 * Can search by number and listen to calls directly on the web interface
 
 ## Requirements
