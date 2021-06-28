@@ -149,9 +149,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $stmt->bindParam(":id", $user_id, PDO::PARAM_STR);
             
                     if ($stmt->execute()) {
-                        echo "Removed user successfully!";
+                        $user_operation_message = "Removed user successfully!";
                     } else {
-                        echo "error with stmt!";
+                        $process_err = "error with stmt!";
                     }
                 }
             }
@@ -174,7 +174,7 @@ if ($stmt = $pdo->prepare($sql)) {
             array_push($users_array, $row);
         }
     } else {
-        echo "error with stmt!";
+        $process_err = "error with stmt!";
     }
 }
 

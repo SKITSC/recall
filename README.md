@@ -1,5 +1,7 @@
-# plivo_backup
+# ⋅ RECALL
 Create backup for all your recorded calls, locally on your server.
+
+Don't ever lose a recorded call!
 
 ## Browser support
 
@@ -9,18 +11,34 @@ Latest ✔ | Latest ✔ | 10+ ✔ | Latest ✔ | 6.1+ ✔ |
 
 ## Install
 
+Start by configuring the .env file correctly, copy the template in .env.example, it will be used in both the docker and not docker environment:
+
+```bash
+ENV=PRODUCTION
+DB_HOST=plivo_db
+DB_PORT=3306
+DB_NAME=plivo_backer
+DB_USERNAME=root
+DB_PASSWORD=password
+PLIVO_AUTH_ID=YOUR_AUTH_ID
+PLIVO_AUTH_TOKEN=YOUR_AUTH_TOKEN
+```
+
 Without Docker:
 
-Start by importing the database, scripts are already in /database.
+Import the database, scripts are already in /database.
 
 ```bash
 git clone https://github.com/SKITSC/plivo_backup.git
 cd ./plivo_backup
+
 composer install
 
 cp .env.example .env
 sed -i -e 's/DEV/PRODUCTION/g' .env
 ```
+
+If you are running without docker, be sure to run the scripts in /utils periodically, either in a Windows task Scheduler or a cron job. You could run the fetch_recordings.php every minute and the download_recordings.php every 2 hours or so, depending on your needs.
 
 With Docker:
 ```bash
@@ -61,8 +79,10 @@ npm run watch
 
 ## Features
 
-* Feature 1
-* Feature 2
+* Simple and responsive web interface
+* 100% customizable (check out /public/scss/themes.scss)
+* Downloads and store the .mp3 files directly on your system
+* Can search by number and listen to calls directly on the web interface
 
 ## Requirements
 
@@ -74,6 +94,10 @@ npm run watch
 ## Contributing
 
 * Create an issue or a pull request, or email us at opensource@skitsc.com
+
+## TO DO
+
+* Add a search by date method inside of /recordings.php page
 
 ## License
 

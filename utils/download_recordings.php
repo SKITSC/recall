@@ -72,8 +72,8 @@ $downloaded_array = array();
 if ($stmt->execute()) {
     
 	$data = $stmt->fetchAll();
-    
     $total_rows = count($data);
+    
     for ($i = 0; $i < $total_rows; $i++) {
 		
 		$db_id = $data[$i][0];

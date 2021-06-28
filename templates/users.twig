@@ -12,12 +12,12 @@
 
     <ul>
     {% for user in users %}
-        <li>{{ user.username|e }}
+        <li class="user-line">{{ user.username|e }}
         {% if id != user.id %}
-            <form method="POST">
+            <form class="remove-user-form" method="POST">
                 <input type="hidden" value="{{user.id}}" name="user_id">
                 <input type="hidden" value="true" name="remove">
-                <input type="submit" value="Remove">
+                <input class="remove-user-button" type="submit" value="Remove">
             </form>
         {% endif %}
         </li>
@@ -25,18 +25,29 @@
     </ul>
 
     <h3>New User</h3>
-    <span class="invalid-feedback">{{process_error}}</span>
+    {% if process_error is not null and process_error is not empty %}
+        <span class="new-user-invalid-feedback">{{process_error}}</span>
+    {% endif %}
     <form method="POST">
-        <label>Username</label>
-        <input type="text" name="username">
-        <span class="invalid-feedback">{{username_error}}</span>   
-        <label>Password</label>
-        <input type="password" name="password">
-        <span class="invalid-feedback">{{password_error}}</span>
-        <label>Repeat Password</label>
-        <input type="password" name="password_repeat">
-        <span class="invalid-feedback">{{password_repeat_error}}</span>
-        <input type="hidden" value="true" name="add">
-        <input type="submit" value="Add">
+        <div class="new-user-form-field">
+            <label>Username</label>
+            <input type="text" name="username">
+            <span class="new-user-invalid-feedback">{{username_error}}</span>   
+        <div class="new-user-form-field">
+            <label>Password</label>
+            <input type="password" name="password">
+            <span class="new-user-invalid-feedback">{{password_error}}</span>
+        </div>
+        <div class="new-user-form-field">
+            <label>Repeat Password</label>
+            <input type="password" name="password_repeat">
+            <span class="new-user-invalid-feedback">{{password_repeat_error}}</span>
+        </div>
+        <div class="new-user-form-field">
+            <input type="hidden" value="true" name="add">
+            <input id="add-user-button" type="submit" value="Add">
+        </div>
     </form>
+
+    <script type="text/javascript" src="static/js/main.min.js"></script>
 {% endblock %}

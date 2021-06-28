@@ -134,7 +134,7 @@ try {
             $call_uuid = get_object_vars($response_object['resources'][$i])['properties']['callUuid'];
             $addTime = get_object_vars($response_object['resources'][$i])['properties']['addTime'];
             $recording_url = get_object_vars($response_object['resources'][$i])['properties']['recordingUrl'];
-			$recording_duration_ms = get_object_vars($response_object['resources'][$i])['properties']['recordingDurationMs'];
+		    $recording_duration_ms = get_object_vars($response_object['resources'][$i])['properties']['recordingDurationMs'];
             $recording_start_ms = get_object_vars($response_object['resources'][$i])['properties']['recordingStartMs'];
             $recording_end_ms = get_object_vars($response_object['resources'][$i])['properties']['recordingEndMs'];
             
