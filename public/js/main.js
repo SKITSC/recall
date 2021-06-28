@@ -1,4 +1,7 @@
-/* distributed file for client js */
+/* distributed file for client js 
+
+*   Copyright (C) 2021 Iyad Al-Kassab
+*/
 
 // responsive hamburger menu
 

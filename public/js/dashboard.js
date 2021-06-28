@@ -2,6 +2,7 @@
 *   Date: 09-06-2021
 *   Author: Iyad Al-Kassab @ SKITSC
 *   Description: js for dashboard page
+*   Copyright (C) 2021 Iyad Al-Kassab
 */
 
 document.addEventListener("DOMContentLoaded", (event) => {
