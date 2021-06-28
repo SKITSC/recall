@@ -1,5 +1,14 @@
-# ⋅ RECALL
+![Recall](https://raw.githubusercontent.com/SKITSC/recall/main/img/recall_logo.svg)
+<img alt="GitHub" src="https://img.shields.io/badge/LICENSE-GPLv3.0-green">
+<img alt="GitHub" src="https://img.shields.io/badge/PHP-%3E%3D5.5-green"><br>
+
 Create backup for all your recorded calls, locally on your server.
+## Features
+
+* Simple and responsive web interface
+* 100% customizable (check out /public/scss/themes.scss)
+* Automatically downloads and store .mp3 files directly on your system
+* Can search by number and listen to calls directly on the web interface
 
 ## Browser support
 
@@ -74,13 +83,6 @@ However you set up your environment, simply change the proxy option in gulp.js, 
 ```
 npm run watch
 ```
-
-## Features
-
-* Simple and responsive web interface
-* 100% customizable (check out /public/scss/themes.scss)
-* Automatically downloads and store .mp3 files directly on your system
-* Can search by number and listen to calls directly on the web interface
 
 ## Requirements
 
