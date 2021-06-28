@@ -5,10 +5,12 @@
 Create backup for all your recorded calls, locally on your server.
 ## Features
 
+* Self-Hosted, dockerized application
 * Simple and responsive web interface
 * 100% customizable (check out /public/scss/themes.scss)
 * Automatically downloads and store .mp3 files directly on your system
 * Can search by number and listen to calls directly on the web interface
+* Screenshots at /img
 
 ## Browser support
 
