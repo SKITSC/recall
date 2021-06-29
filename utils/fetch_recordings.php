@@ -125,8 +125,8 @@ try {
 $recordings_retrieved = array();
 
 try {
-    $k = 0;
-    while ($k < $recordings_to_fetch_per_update) {
+    $k = $recordings_to_fetch_per_update;
+    while ($k >= 0) {
 
         // get 20 (limit_fetch) and continue
         $response = $client->recordings->list(
@@ -255,7 +255,7 @@ try {
 
         }
         
-        $k += $limit_fetch;
+        $k -= $limit_fetch;
     }
 } catch (PlivoRestException $ex) {
     $process_err = $ex;

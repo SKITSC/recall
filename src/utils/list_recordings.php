@@ -46,10 +46,10 @@ if (isset($_GET['search_phone']) && !empty($_GET['search_phone'])) {
         if (is_numeric($_GET['page'])) {
             $page = $_GET['page'];
             $page_set = true;
-            $sql_query = "SELECT * FROM backer_recordings WHERE (from_number LIKE :sql_from OR to_number LIKE :sql_to) LIMIT " . ($page - 1) * 50 . ",50";
+            $sql_query = "SELECT * FROM backer_recordings WHERE (from_number LIKE :sql_from OR to_number LIKE :sql_to) ORDER BY id DESC LIMIT " . ($page - 1) * 50 . ",50";
         }
     } else {
-        $sql_query = "SELECT * FROM backer_recordings WHERE (from_number LIKE :sql_from OR to_number LIKE :sql_to)";
+        $sql_query = "SELECT * FROM backer_recordings WHERE (from_number LIKE :sql_from OR to_number LIKE :sql_to) ORDER BY id DESC";
     }
     
     $stmt = $pdo->prepare($sql_query);
@@ -62,14 +62,14 @@ if (isset($_GET['search_phone']) && !empty($_GET['search_phone'])) {
     if (isset($_GET['page']) && !empty($_GET['page'])) {
         $page = $_GET['page'];
         if (is_numeric($page)) {
-            $sql_query = "SELECT * FROM backer_recordings LIMIT " . ($page - 1) * 50 . ",50";
+            $sql_query = "SELECT * FROM backer_recordings ORDER BY id DESC LIMIT " . ($page - 1) * 50 . ",50";
 
             $stmt = $pdo->prepare($sql_query);
         } else {
             $process_err = "page must be numeric";
         }
     } else {
-        $sql_query = "SELECT * FROM backer_recordings LIMIT 50";
+        $sql_query = "SELECT * FROM backer_recordings ORDER BY id DESC LIMIT 50";
     }
 }
 
